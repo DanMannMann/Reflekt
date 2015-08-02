@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{400D5618-E74E-4DBD-BE7F-044A3D76B9BA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Marsman.Ember</RootNamespace>
+    <AssemblyName>Marsman.Ember</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Constructor\ConstructorReflekt.cs" />
+    <Compile Include="Core\Constructor\ConstructorSelectorReflekt.cs" />
+    <Compile Include="Core\Constructor\Reflekt_constructor.cs" />
+    <Compile Include="Core\Constructor\GenericConstructorReflekt.cs" />
+    <Compile Include="Core\Reflekt.cs" />
+    <Compile Include="Core\Method\Reflekt_method.cs" />
+    <Compile Include="Core\MemberReflekt.cs" />
+    <Compile Include="Core\Property\Reflekt_property.cs" />
+    <Compile Include="Core\Extensions.cs" />
+    <Compile Include="Core\Method\GenericMethodReflekt.cs" />
+    <Compile Include="Core\Method\MethodReflekt.cs" />
+    <Compile Include="Core\Method\ReturnMethodReflekt.cs" />
+    <Compile Include="Core\Method\VoidMethodReflekt.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visitors\ConstructorBuilderVisitor.cs" />
+    <Compile Include="Visitors\ConstructorVisitor.cs" />
+    <Compile Include="Visitors\MethodBuilderVisitor.cs" />
+    <Compile Include="Visitors\MethodVisitor.cs" />
+    <Compile Include="Visitors\PropertyVisitor.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
