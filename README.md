@@ -95,6 +95,9 @@ If you don't call WithTypeArguments() then any generic type arguments you specif
 
 If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type. This does mean that the number of type arguments supplied in WithTypeArguments() must match the number of type arguments on the target member exactly (or be zero when getting a generic method definition). Partial type argument injection is not supported.
 
+>#### Tip
+>To help keep code readable there is a parameterless method named ```GenericDefinition()``` which can be used in place of ```WithTypeArguments()``` and which does the same thing as calling ```WithTypeArguments()``` with no parameters. The ```GenericDefinition()``` method is only available after calling ```Reflekt().Method()```.
+
 
 ### Overview of a Reflekt call
 
