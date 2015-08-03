@@ -6,6 +6,14 @@ Particularly useful for diagnostics (e.g. get method name for log) and situation
 
 But best of all avail yourself of the benefits of rename refactoring without breaking your reflection, serialisation or proxying code. Or indeed any other situation where the name of a particular member known at compile time needs to be used as a string.
 
+### Nuget
+
+You can find Reflekt at https://www.nuget.org/packages/Marsman.Reflekt/ or install using
+
+```
+install-package marsman.reflekt
+```
+
 ## Usage
 
 Add a using to get things going.
@@ -28,6 +36,15 @@ Getting the PropertyInfo object for a property is basically the same, but differ
                           //On type            //Get the      //For this property
                           //ExampleType        //info   
 PropertyInfo propertyInfo = Reflekt<ExampleType>.Property(x => x.Property2);
+```
+
+Getting a MethodInfo for a method with no return type and no parameters is fairly terse
+
+```csharp
+                      //On type             //get method with void  //Select the member
+                      //List<string>        //return type and no
+                                            //parameters
+MethodInfo methodInfo = Reflekt<List<string>>.Method().Parameterless(x => x.Clear);
 ```
 
 Getting a method with parameters and a return type gets a little bit more sticky. 
