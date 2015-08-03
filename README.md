@@ -93,7 +93,7 @@ Note that you must always specify type arguments if WithTypeArguments() is calle
 
 If you don't call WithTypeArguments() then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved. That is ``` Reflekt<List<T1>>().Constructor().Parameterless(x => new List<T1>()) ``` will actually return a constructor which produces instances of List&lt;T1&gt;. No spooky magic happens just because a Reflekt placeholder type was used.
 
-If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type.
+If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type. This does mean that the number of type arguments supplied in WithTypeArguments() must match the number of type arguments on the target member exactly (or be zero when getting a generic method definition). Partial type argument injection is not supported.
 
 
 ### Overview of a Reflekt call
