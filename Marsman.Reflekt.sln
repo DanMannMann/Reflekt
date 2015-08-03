@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{BDE804D4-069E-4EA0-9FE8-528826A4E556}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		shield-reflect.png = shield-reflect.png
 	EndProjectSection
 EndProject
 Global
