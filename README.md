@@ -64,23 +64,33 @@ List<string> testInstance = new List<string>();
 PropertyInfo countProperty = testInstance.Reflekt().property(x => x.Count);
 ```
 
+### Placeholder type arguments
+
+The type T1 used in the examples as a generic type argument is a placeholder type included with the Reflekt library.
+If you are reflecting generic types or methods with generic type constraints then you may need to use
+different placeholder types. Unconstrained generics and generics with new() or class constraints can use
+the T1...T8 placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
+off the workload standing between you and the pub.
+
+Placeholder types are only meaningful - and always either used or discarded - when WithTypeArguments() is called. Either a generic type/method definition is returned, if no runtime types are specified, or a type/method constructed with the runtime types is returned.
+
+If you don't call WithTypeArguments() then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved (i.e. calling Reflekt<List<T1>>().Constructor().Parameterless(x => new Reflekt<T1>()) will actually return a constructor which produces instances of List<T1>. No spooky magic happens just because a Reflekt placeholder type was used.
+
+If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced.
+
+
+### Overview of a Reflekt call
+
 As a rule a Reflekt statement reads from left to right as such:
 
 - Start reflekt call -> 
 - Choose method, property or constructor -> 
-- Optionally specify runtime types by calling .WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling .WithTypeArguments() with no parameters -> 
+- Optionally specify runtime types by calling WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling WithTypeArguments() with no parameters -> 
 - Specify parameter types -> 
 - specify exact member with lambda
 
-Note that you must always specify type arguments if .WithTypeArguments() is called after .Constructor(), as constructors do not exist for unconstructed generic types. Calling .WithTypeArguments() with no parameters only works after .Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
+Note that you must always specify type arguments if WithTypeArguments() is called after Constructor(), as constructors do not exist for unconstructed generic types. Calling WithTypeArguments() with no parameters only works after Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
 
-The generic type T1 used in the examples is a placeholder type included with the Reflekt library.
-If you are reflecting generic types or methods with generic type constraints then you may need to use
-different placeholder types. Unconstrained generics and generics with the new() or class constraints can use
-the T1...T8 placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
-off the workload standing between you and the pub.
-
-Placeholder types are only meaningful - and always either used or discarded - when .Generic() or .WithTypeArguments() is called. 
-Either a generic type/method definition is returned, if no runtime types are specified, or a type/method constructed with the runtime types is returned.
+### The lambda selectors
 
 The content of the selector lambdas is never invoked, so don't worry about things like the "(x,y) => new ExampleType(x,y)", they're just you telling Reflekt what to get and they never create pointless instances of things or pointlessly call any methods.
