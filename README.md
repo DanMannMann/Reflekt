@@ -76,7 +76,7 @@ Placeholder types are only meaningful - and always either used or discarded - wh
 
 If you don't call WithTypeArguments() then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved. That is ``` Reflekt<List<T1>>().Constructor().Parameterless(x => new List<T1>()) ``` will actually return a constructor which produces instances of List&lt;T1&gt;. No spooky magic happens just because a Reflekt placeholder type was used.
 
-If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced.
+If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a Reflekt placeholder type.
 
 
 ### Overview of a Reflekt call
