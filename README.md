@@ -53,7 +53,7 @@ And you can get a constructor for a constructed generic type using runtime type 
 ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().Generic(typeKnownAtRuntime).Parameters<int,string>((x, y) => new GenericType<T1>(x, y));
 ```
 
-There are also some extension methods you can call to execute Reflekt statements on the type on an object instance.
+There are also some extension methods you can call to execute Reflekt statements on the type of an object instance.
 
 ```csharp
 List<string> testInstance = new List<string>();
@@ -64,7 +64,7 @@ As a rule a Reflekt statement reads from left to right as such:
 
 - Start reflekt call -> 
 - Choose method, property or constructor -> 
-- Optionally specify runtime types, or tell Reflekt to get the generic definition, by calling .WithTypeArguments() -> 
+- Optionally specify runtime types by calling .WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling .WithTypeArguments() with no parameters -> 
 - Specify parameter types -> 
 - specify exact member with lambda
 
