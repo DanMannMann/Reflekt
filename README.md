@@ -47,10 +47,10 @@ MethodInfo genericInfo = Reflekt<ExampleType>.Method<string>().WithTypeArguments
 And you can get a constructor for a constructed generic type using runtime type arguments too
 
 ```csharp
-                                           //On type GenericType<>  //get the ctr //for a concrete type       //Where the ctr has 2            //Select the
-                                                                                  //using the runtime type    //params, int and                //constructor
-                                                                                  //args                      //string
-ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().Generic(typeKnownAtRuntime).Parameters<int,string>((x, y) => new GenericType<T1>(x, y));
+                                           //On type GenericType<>  //get the ctr //for a concrete type                 //Where the ctr has 2            //Select the
+                                                                                  //using the runtime type              //params, int and                //constructor
+                                                                                  //args                                //string
+ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().WithTypeArguments(typeKnownAtRuntime).Parameters<int,string>((x, y) => new GenericType<T1>(x, y));
 ```
 
 There are also some extension methods you can call to execute Reflekt statements on the type of an object instance.
@@ -67,6 +67,8 @@ As a rule a Reflekt statement reads from left to right as such:
 - Optionally specify runtime types by calling .WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling .WithTypeArguments() with no parameters -> 
 - Specify parameter types -> 
 - specify exact member with lambda
+
+Note that you must always specify type arguments if .WithTypeArguments() is called after .Constructor(), as constructors do not exist for unconstructed generic types. Calling .WithTypeArguments() with no parameters only works after .Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
 
 The generic type T1 used in the examples is a placeholder type included with the Reflekt library.
 If you are reflecting generic types or methods with generic type constraints then you may need to use
