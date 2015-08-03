@@ -109,9 +109,9 @@ As a rule a Reflekt statement reads from left to right as such:
 
 ### Compile-time Safety
 
-You'll notice that if the return type, parameter types and any generic arguments specified in the Reflekt<Type<Arg>> statement don't match those used (or implied) in the lambda selector you'll get a compiler error. This can seem annoyingly verbose when there's only one overload of a method but it is essential to allow the correct method to be chosen when there are multiple overloads in the method group.
+You'll notice that if the return type, parameter types and any generic arguments specified in the ```Reflekt<Type<Arg>>``` statement don't match those used (or implied) in the lambda selector you'll get a compiler error. This can seem annoyingly verbose when there's only one overload of a method but it is essential to allow the correct method to be chosen when there are multiple overloads in the method group.
 
-It is required that the same placeholder types are used in the corresponding generic type argument "places" in the lambda as well as in the Reflekt<Type<args>> statement and Method<Treturn>() call, even when those types are going to be replaced by runtime types. For instance this will compile:
+It is required that the same placeholder types are used in the corresponding generic type argument "places" in the lambda as well as in the ```Reflekt<Type<args>>``` statement and ```Method<Treturn>()``` call, even when those types are going to be replaced by runtime types. For instance this will compile:
 
 ```csharp
 Reflekt<List<T1>>.Method().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.Add);
@@ -123,7 +123,7 @@ But this won't because the compiler quite rightly says that the parameter type o
 Reflekt<List<T1>>.Method().WithTypeArguments(typeKnownAtRuntime).Parameters<T2>(x => x.Add);
 ```
 
-In this situation you'll see error highlighting under the "x.Add" in Visual Studio, with the error message "No overload for 'Add' matches delegate 'System.Action<T2>'"
+In this situation you'll see error highlighting under the "x.Add" in Visual Studio, with the error message ```"No overload for 'Add' matches delegate 'System.Action<T2>'"```
 
 ### The lambda selectors
 
