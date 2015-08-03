@@ -85,11 +85,11 @@ If you do call WithTypeArguments() then any generic type arguments you specify w
 
 As a rule a Reflekt statement reads from left to right as such:
 
-- Start reflekt call -> 
-- Choose method, property or constructor -> 
-- Optionally specify runtime types by calling WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling WithTypeArguments() with no parameters -> 
-- Specify parameter types -> 
-- specify exact member with lambda
+- Start reflekt call
+- Choose method, property or constructor
+- Optionally specify runtime types by calling WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling WithTypeArguments() with no parameters
+- Specify parameter types
+- Specify exact member with lambda
 - 
 
 ### The lambda selectors
