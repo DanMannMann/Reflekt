@@ -71,3 +71,10 @@ Placeholder types are only meaningful - and always either used or discarded - wh
 Either a generic type/method definition is returned, if no runtime types are specified, or a type/method constructed with the runtime types is returned.
 
 The content of the selector lambdas is never invoked, so don't worry about things like the "(x,y) => new ExampleType(x,y)", they're just you telling Reflekt what to get and they never create pointless instances of things or pointlessly call any methods.
+
+There are also some extension methods you can call to execute Reflekt statements on the type on an object instance.
+
+```csharp
+    List<string> testInstance = new List<string>();
+    PropertyInfo countProperty = testInstance.Reflekt().property(x => x.Count);
+```
