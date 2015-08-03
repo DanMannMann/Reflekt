@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Marsman.Ember.Visitors
+namespace Marsman.Reflekt.Visitors
 {
     public class ConstructorVisitor : ExpressionVisitor
     {

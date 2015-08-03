@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public class VoidMethodReflekt<T>
     {

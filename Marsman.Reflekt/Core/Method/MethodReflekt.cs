@@ -1,8 +1,8 @@
-using Marsman.Ember.Visitors;
+using Marsman.Reflekt.Visitors;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public class MethodReflekt<T> : MemberReflekt<T, MethodInfo>
     {

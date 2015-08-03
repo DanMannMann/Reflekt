@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Marsman.Ember.Visitors
+namespace Marsman.Reflekt.Visitors
 {
     public class MethodBuilderVisitor : ExpressionVisitor
     {

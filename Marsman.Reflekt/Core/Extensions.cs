@@ -1,6 +1,6 @@
 using System;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public static class Extensions
     {

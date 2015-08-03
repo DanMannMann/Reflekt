@@ -1,9 +1,9 @@
-using Marsman.Ember.Visitors;
+using Marsman.Reflekt.Visitors;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public partial class Reflekt<T>
     {

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Marsman.Ember.Visitors
+namespace Marsman.Reflekt.Visitors
 {
     public class PropertyVisitor : ExpressionVisitor
     {

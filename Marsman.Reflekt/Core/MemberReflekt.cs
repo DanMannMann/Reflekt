@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public abstract class MemberReflekt<T, Tmember> where Tmember : MemberInfo
     {

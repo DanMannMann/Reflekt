@@ -1,4 +1,4 @@
-﻿using Marsman.Ember.Visitors;
+﻿using Marsman.Reflekt.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Marsman.Ember
+namespace Marsman.Reflekt
 {
     public partial class Reflekt<T>
     {
