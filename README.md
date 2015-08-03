@@ -54,7 +54,7 @@ Getting a method with parameters and a return type gets a little bit more sticky
 MethodInfo methodInfo = Reflekt<List<string>>.Method<string>().Parameters<int>(x => x.ElementAt);
 ```
 
-You can also construct a concrete generic method using types only known at runtime, by calling .WithTypeArguments()
+You can also construct a concrete generic method using types only known at runtime, by calling ```WithTypeArguments()```
 
 ```csharp
                         //On type           //get method     //with a generic type                 //and with         //Select the member
@@ -81,19 +81,19 @@ PropertyInfo countProperty = testInstance.Reflekt().property(x => x.Count);
 
 ### Placeholder type arguments
 
-The type T1 used in the examples as a generic type argument is a placeholder type included with the Reflekt library.
+The type ```T1``` used in the examples as a generic type argument is a placeholder type included with the Reflekt library.
 If you are reflecting generic types or methods with generic type constraints then you may need to use
-different placeholder types. Unconstrained generics and generics with new() or class constraints can use
-the T1...T8 placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
+different placeholder types. Unconstrained generics and generics with ```new()``` or ```class``` constraints can use
+the ```T1```...```T8``` placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
 off the workload standing between you and the pub.
 
-Placeholder types are only meaningful - and always either used or discarded - when WithTypeArguments() is called. If no runtime types are specified then a generic method definition is returned, otherwise a type/method constructed with the runtime types is returned.
+Placeholder types are only meaningful - and always either used or discarded - when ```WithTypeArguments()``` is called. If no runtime types are specified then a generic method definition is returned, otherwise a type/method constructed with the runtime types is returned.
 
-Note that you must always specify type arguments if WithTypeArguments() is called after Constructor(), as constructors do not exist for unconstructed generic types. Calling WithTypeArguments() with no parameters only works after Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
+Note that you must always specify type arguments if ```WithTypeArguments()``` is called after ```Constructor()```, as constructors do not exist for unconstructed generic types. Calling ```WithTypeArguments()``` with no parameters only works after ```Method()```, and the MethodInfo returned won't be invokable until it is constructed with some real types.
 
-If you don't call WithTypeArguments() then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved. That is ``` Reflekt<List<T1>>().Constructor().Parameterless(x => new List<T1>()) ``` will actually return a constructor which produces instances of List&lt;T1&gt;. No spooky magic happens just because a Reflekt placeholder type was used.
+If you don't call ```WithTypeArguments()``` then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved. That is ``` Reflekt<List<T1>>().Constructor().Parameterless(x => new List<T1>()) ``` will actually return a constructor which produces instances of ```List<T1>```. No spooky magic happens just because a Reflekt placeholder type was used.
 
-If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type. This does mean that the number of type arguments supplied in WithTypeArguments() must match the number of type arguments on the target member exactly (or be zero when getting a generic method definition). Partial type argument injection is not supported.
+If you do call ```WithTypeArguments()``` then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type. This does mean that the number of type arguments supplied in ```WithTypeArguments()``` must match the number of type arguments on the target member exactly (or be zero when getting a generic method definition). Partial type argument injection is not supported.
 
 >#### Tip
 >To help keep code readable there is a parameterless method named ```GenericDefinition()``` which can be used in place of ```WithTypeArguments()``` and which does the same thing as calling ```WithTypeArguments()``` with no parameters. The ```GenericDefinition()``` method is only available after calling ```Reflekt().Method()```.
@@ -120,14 +120,14 @@ It is required that the same placeholder types are used in the corresponding gen
 Reflekt<List<T1>>.Method().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.Add);
 ```
 
-But this won't because the compiler quite rightly says that the parameter type of the Add method should match the generic type argument of the List<T> type:
+But this won't because the compiler quite rightly says that the parameter type of the Add method should match the generic type argument of the ```List<T>``` type:
 
 ```csharp
 Reflekt<List<T1>>.Method().WithTypeArguments(typeKnownAtRuntime).Parameters<T2>(x => x.Add);
 ```
 
-In this situation you'll see error highlighting under the "x.Add" in Visual Studio, with the error message ```"No overload for 'Add' matches delegate 'System.Action<T2>'"```
+In this situation you'll see error highlighting under the ```x.Add``` in Visual Studio, with the error message ```"No overload for 'Add' matches delegate 'System.Action<T2>'"```
 
 ### The lambda selectors
 
-The content of the selector lambdas is never invoked, so don't worry about things like the "(x,y) => new ExampleType(x,y)", they're just you telling Reflekt what to get and they never create pointless instances of things or pointlessly call any methods.
+The content of the selector lambdas is never invoked, so don't worry about things like the ```(x,y) => new ExampleType(x,y)```, they're just you telling Reflekt what to get and they never create pointless instances of things or pointlessly call any methods.
