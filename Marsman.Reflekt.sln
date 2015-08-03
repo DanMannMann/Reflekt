@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{BDE804
 		shield-reflect.png = shield-reflect.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackageDefinitions", "NugetPackageDefinitions", "{29E59F5B-1FD9-474B-86AB-63400292D71C}"
+	ProjectSection(SolutionItems) = preProject
+		Marsman.Reflekt.0.5.0.nupkg = Marsman.Reflekt.0.5.0.nupkg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

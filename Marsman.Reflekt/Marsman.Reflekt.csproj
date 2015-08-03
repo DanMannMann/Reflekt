@@ -7,8 +7,8 @@
     <ProjectGuid>{400D5618-E74E-4DBD-BE7F-044A3D76B9BA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Marsman.Ember</RootNamespace>
-    <AssemblyName>Marsman.Ember</AssemblyName>
+    <RootNamespace>Marsman.Reflekt</RootNamespace>
+    <AssemblyName>Marsman.Reflekt</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -17,30 +17,31 @@ namespace Marsman.Reflekt.Sandbox
 
             var typeKnownAtRuntime = typeof(string);
 
-                                //On type            //Get the          //For this property
-                                //ExampleType        //prop name   
+            //On type            //Get the          //For this property
+            //ExampleType        //prop name   
             string propertyName = Reflekt<ExampleType>.PropertyName(x => x.Property1);
 
-                                      //On type            //Get the      //For this property
-                                      //ExampleType        //info   
+            //On type            //Get the      //For this property
+            //ExampleType        //info   
             PropertyInfo propertyInfo = Reflekt<ExampleType>.Property(x => x.Property2);
 
 
-                                  //On type             //get method     //and with           //Select the member
-                                  //List<string>        //with string    //1 param of
-                                                        //return type    //type int
+            //On type             //get method     //and with           //Select the member
+            //List<string>        //with string    //1 param of
+            //return type    //type int
             MethodInfo methodInfo = Reflekt<List<string>>.Method<string>().Parameters<int>(x => x.ElementAt);
 
-                                    //On type           //get method     //with a generic type                 //and with         //Select the member
-                                    //ExampleType       //with string    //argument known only                 //no parameters   
-                                                        //return type,   //at runtime
+            //On type           //get method     //with a generic type                 //and with         //Select the member
+            //ExampleType       //with string    //argument known only                 //no parameters   
+            //return type,   //at runtime
             MethodInfo genericInfo = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameterless(x => x.GenericMethod<T1>);
 
-                                                       //On type GenericType<>  //get the ctr //for a concrete type       //Where the ctr has 2            //Select the
-                                                                                              //using the runtime type    //params, int and                //constructor
-                                                                                              //args                      //string
-            ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().WithTypeArguments(typeKnownAtRuntime).Parameters<int,string>((x, y) => new GenericType<T1>(x, y));
+            //On type GenericType<>  //get the ctr //for a concrete type       //Where the ctr has 2            //Select the
+            //using the runtime type    //params, int and                //constructor
+            //args                      //string
+            ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().WithTypeArguments(typeKnownAtRuntime).Parameters<int, string>((x, y) => new GenericType<T1>(x, y));
 
+        }
     }
 
     class ExampleType
