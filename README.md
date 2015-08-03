@@ -82,7 +82,7 @@ PropertyInfo countProperty = testInstance.Reflekt().property(x => x.Count);
 ### Placeholder type arguments
 
 The type ```T1``` used in the examples as a generic type argument is a placeholder type included with the Reflekt library.
-If you are reflecting generic types or methods with generic type constraints then you may need to use
+If you are reflecting generic types/methods with generic type constraints then you may need to use
 different placeholder types. Unconstrained generics and generics with ```new()``` or ```class``` constraints can use
 the ```T1```...```T8``` placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
 off the workload standing between you and the pub.
