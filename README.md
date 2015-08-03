@@ -4,6 +4,10 @@ Use lambda expression syntax to get MemberInfo objects, eliminating magic string
 
 Particularly useful for diagnostics (e.g. get method name for log) and situations where you need to call a proxy by name (e.g. calling a SignalR hub method from C# code)
 
+But best of all avail yourself of the benefits of rename refactoring without breaking your reflection, serialisation or proxying code. Or indeed any other situation where the name of a particular member known at compile time needs to be used as a string.
+
+## Usage
+
 Add a using to get things going.
 
 ```csharp
