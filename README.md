@@ -6,8 +6,6 @@ Particularly useful for diagnostics (e.g. get method name for log) and situation
 
 But best of all avail yourself of the benefits of rename refactoring without breaking your reflection, serialisation or proxying code. Or indeed any other situation where the name of a particular member known at compile time needs to be used as a string.
 
-### Nuget
-
 You can find Reflekt at https://www.nuget.org/packages/Marsman.Reflekt/ or install using
 
 ```
