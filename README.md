@@ -72,11 +72,13 @@ different placeholder types. Unconstrained generics and generics with new() or c
 the T1...T8 placeholder types from Reflekt, which keeps things looking a bit neater and shaves valuable keystrokes
 off the workload standing between you and the pub.
 
-Placeholder types are only meaningful - and always either used or discarded - when WithTypeArguments() is called. Either a generic type/method definition is returned, if no runtime types are specified, or a type/method constructed with the runtime types is returned.
+Placeholder types are only meaningful - and always either used or discarded - when WithTypeArguments() is called. If no runtime types are specified then a generic method definition is returned, otherwise a type/method constructed with the runtime types is returned.
+
+Note that you must always specify type arguments if WithTypeArguments() is called after Constructor(), as constructors do not exist for unconstructed generic types. Calling WithTypeArguments() with no parameters only works after Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
 
 If you don't call WithTypeArguments() then any generic type arguments you specify either in Reflekt calls or in the lambda selector will be preserved. That is ``` Reflekt<List<T1>>().Constructor().Parameterless(x => new List<T1>()) ``` will actually return a constructor which produces instances of List&lt;T1&gt;. No spooky magic happens just because a Reflekt placeholder type was used.
 
-If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a Reflekt placeholder type.
+If you do call WithTypeArguments() then any generic type arguments you specify which correspond to generic parameters on the target member are treated as placeholders and removed or replaced. Nothing is preserved or ignored using spooky magic just because it isn't a built-in Reflekt placeholder type. After all there are many situations where you need to use some arbitrary placeholder type.
 
 
 ### Overview of a Reflekt call
@@ -88,8 +90,7 @@ As a rule a Reflekt statement reads from left to right as such:
 - Optionally specify runtime types by calling WithTypeArguments() with Type instances as parameters, or specify that a generic method definition should be returned by calling WithTypeArguments() with no parameters -> 
 - Specify parameter types -> 
 - specify exact member with lambda
-
-Note that you must always specify type arguments if WithTypeArguments() is called after Constructor(), as constructors do not exist for unconstructed generic types. Calling WithTypeArguments() with no parameters only works after Method(), and the MethodInfo returned won't be invokable until it is constructed with some real types.
+- 
 
 ### The lambda selectors
 
