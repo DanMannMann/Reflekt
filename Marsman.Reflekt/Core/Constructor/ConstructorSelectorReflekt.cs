@@ -8,7 +8,7 @@ namespace Marsman.Reflekt
     {
         Func<Expression, ConstructorReflekt<T>> _expressionVisitor;
 
-        public ConstructorSelectorReflekt<T> Generic(params Type[] types)
+        public ConstructorSelectorReflekt<T> WithTypeArguments(params Type[] types)
         {
             return new ConstructorSelectorReflekt<T>(x => new GenericConstructorReflekt<T>(x, types));
         }

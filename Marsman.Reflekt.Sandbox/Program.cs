@@ -12,21 +12,49 @@ namespace Marsman.Reflekt.Sandbox
     {
         static void Main(string[] args)
         {
-            var t = new Test();
-            object fghgh;
-            var arg = "";
-            var cons2 = Reflekt<Test<T1>>.Constructor().Generic(arg.GetType()).Parameters<T1, int>((x, y) => new Test<T1>(x, y));
-            var inst = cons2.Invoke(new object[] { arg, 5 });
-            fghgh = t.Ember().method().Parameterless(x => x.GenericTest<string>);
-            fghgh = t.Ember().method().Parameterless(x => x.GenericTest);
-            fghgh = t.Ember().method().Parameterless(x => x.VoidVoid);
-            fghgh = t.Ember().method<string>().Parameters<string, string>(x => x.String2);
-            fghgh = t.Ember().method().Parameters<string, DateTime>(x => x.Void2);
-            fghgh = t.Ember().property(x => x.Property);
-            fghgh = Reflekt<Test>.Method<string>().Parameterless(x => x.StringVoid);
-            var methodName = Reflekt<List<T1>>.PropertyName(x => x.Capacity);
-            fghgh = t.Ember().method<T2>().WithTypeArguments(typeof(string),typeof(int)).Parameterless(x => x.GenericTest<T1, T2>);
-            var cons = t.Ember().constructor().Parameterless(() => new Test());        }
+            List<string> testInstance = new List<string>();
+            PropertyInfo countProperty = testInstance.Reflekt().property(x => x.Count);
+
+            var typeKnownAtRuntime = typeof(string);
+
+                                //On type            //Get the          //For this property
+                                //ExampleType        //prop name   
+            string propertyName = Reflekt<ExampleType>.PropertyName(x => x.Property1);
+
+                                      //On type            //Get the      //For this property
+                                      //ExampleType        //info   
+            PropertyInfo propertyInfo = Reflekt<ExampleType>.Property(x => x.Property2);
+
+
+                                  //On type             //get method     //and with           //Select the member
+                                  //List<string>        //with string    //1 param of
+                                                        //return type    //type int
+            MethodInfo methodInfo = Reflekt<List<string>>.Method<string>().Parameters<int>(x => x.ElementAt);
+
+                                    //On type           //get method     //with a generic type                 //and with         //Select the member
+                                    //ExampleType       //with string    //argument known only                 //no parameters   
+                                                        //return type,   //at runtime
+            MethodInfo genericInfo = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameterless(x => x.GenericMethod<T1>);
+
+                                                       //On type GenericType<>  //get the ctr //for a concrete type       //Where the ctr has 2            //Select the
+                                                                                              //using the runtime type    //params, int and                //constructor
+                                                                                              //args                      //string
+            ConstructorInfo genericTypeConstructorInfo = Reflekt<GenericType<T1>>.Constructor().WithTypeArguments(typeKnownAtRuntime).Parameters<int,string>((x, y) => new GenericType<T1>(x, y));
+
+    }
+
+    class ExampleType
+    {
+        public string Property1{ get; set; }
+
+        public string Property2 { get; set; }
+
+        public string GenericMethod<T>() where T : class { return "Hello world. Type is:" + typeof(T).Name; }
+    }
+
+    class GenericType<T>
+    {
+        public GenericType(int param1, string param2) { /*...*/ }
     }
 
     class Test<X> { public Test(X firstArg, int secondArg) { } }
