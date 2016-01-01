@@ -42,10 +42,10 @@ namespace Marsman.Reflekt.Visitors
             {
                 for (int i = 0; i < _newGenericArgs.Length; i++)
                 {
-                    var constraints = genericTypeParameters[i].GetGenericParameterConstraints().ToList();
+                    var constraints = genericTypeParameters[i].GetTypeInfo().GetGenericParameterConstraints().ToList();
                     foreach (var constraint in constraints)
                     {
-                        if (!constraint.IsAssignableFrom(_newGenericArgs[i]))
+                        if (!constraint.GetTypeInfo().IsAssignableFrom(_newGenericArgs[i].GetTypeInfo()))
                         {
                             throw new InvalidOperationException("Generic type parameter " + i + " is constrained to type " + constraint + ". The supplied type " + _newGenericArgs[i] + " does not meet this constraint");
                         }
