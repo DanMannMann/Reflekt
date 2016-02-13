@@ -12,6 +12,10 @@ You can find Reflekt at https://www.nuget.org/packages/Marsman.Reflekt/ or insta
 install-package marsman.reflekt
 ```
 
+### Note
+
+This library has not been thoroughly tested with the new separated TypeInfo classes in .NET 4.6. I've had no problems yet but not every scenario has been robustly tested.
+
 ## Usage
 
 Add a using to get things going.
