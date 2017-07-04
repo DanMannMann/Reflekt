@@ -135,3 +135,11 @@ In this situation you'll see error highlighting under the ```x.Add``` in Visual 
 ### The lambda selectors
 
 The content of the selector lambdas is never invoked, so don't worry about things like the ```(x,y) => new ExampleType(x,y)```, they're just you telling Reflekt what to get and they never create pointless instances of things or pointlessly call any methods.
+
+### Getting Static Methods and Properties
+
+It is possible to get a MethodInfo or PropertyInfo for a static method/property, regardless of whether the class they're a member of is marked static. Everything is the same as normal, except the main type argument to Reflekt<> should be some dummy type (typically object) and the selector should ignore the input parameter and instead reference the relevant static member directly.
+
+```csharp
+Reflekt<object>.Method<Guid>().Parameters<string>(x => Guid.Parse)
+```
