@@ -40,21 +40,9 @@ namespace Marsman.Reflekt.Visitors
             }
             else
             {
-                for (int i = 0; i < _newGenericArgs.Length; i++)
-                {
-                    var constraints = genericTypeParameters[i].GetTypeInfo().GetGenericParameterConstraints().ToList();
-                    foreach (var constraint in constraints)
-                    {
-                        if (!constraint.GetTypeInfo().IsAssignableFrom(_newGenericArgs[i].GetTypeInfo()))
-                        {
-                            throw new InvalidOperationException("Generic type parameter " + i + " is constrained to type " + constraint + ". The supplied type " + _newGenericArgs[i] + " does not meet this constraint");
-                        }
-                    }
-                }
                 result = genericDef.MakeGenericMethod(_newGenericArgs);
                 throw new VisitStoppedException();
             }
-            
         }
     }
 }
