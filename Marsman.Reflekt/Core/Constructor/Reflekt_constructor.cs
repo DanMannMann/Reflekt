@@ -14,7 +14,7 @@ namespace Marsman.Reflekt
 
         public ConstructorSelectorReflekt<T> constructor()
         {
-            return new ConstructorSelectorReflekt<T>(x => new ConstructorReflekt<T>(x));
+			return Constructor();
         }
     }
 }

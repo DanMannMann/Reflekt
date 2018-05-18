@@ -19,12 +19,12 @@ namespace Marsman.Reflekt
 
         public PropertyInfo property(Expression<Func<T, object>> selector)
         {
-            return PropertyVisitor.GetPropertyInfo(selector);
-        }
+			return Property(selector);
+		}
 
         public string propertyName(Expression<Func<T, object>> selector)
         {
-            return PropertyVisitor.GetPropertyInfo(selector).Name;
-        }
+			return PropertyName(selector);
+		}
     }
 }

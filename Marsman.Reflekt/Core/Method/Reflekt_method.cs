@@ -23,12 +23,13 @@ namespace Marsman.Reflekt
 
         public VoidMethodReflekt<T> method()
         {
-            return new VoidMethodReflekt<T>(x => new MethodReflekt<T>(x));
-        }
+			return Method();
+
+		}
 
         public ReturnMethodReflekt<T, Treturn> method<Treturn>()
         {
-            return new ReturnMethodReflekt<T, Treturn>(x => new MethodReflekt<T>(x));
+			return Method<Treturn>();
         }
     }
 }
