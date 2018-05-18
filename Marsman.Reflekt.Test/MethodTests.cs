@@ -18,6 +18,32 @@ namespace Marsman.Reflekt.Test
 		}
 
 		[TestMethod]
+		public void GetMethodInfoWithParameters()
+		{
+			var method = Reflekt<ExampleType>.Method<double>().Parameters<float>(x => x.Method2);
+			var instance = new ExampleType();
+			Assert.AreEqual("Method2", method.Name);
+			Assert.AreEqual(16d, method.Invoke(instance, new object[] { 4f }));
+		}
+
+		[TestMethod]
+		public void GetMethodInfoWithParametersUsingShorthand()
+		{
+			var method = Reflekt<ExampleType>.MethodInfo<float, double>(x => x.Method2);
+			var instance = new ExampleType();
+			Assert.AreEqual("Method2", method.Name);
+			Assert.AreEqual(16d, method.Invoke(instance, new object[] { 4f }));
+		}
+
+		[TestMethod]
+		public void GetMethodInfoWithNoReturnType()
+		{
+			var method = Reflekt<ExampleType>.Method().Parameterless(x => x.Method3);
+			var instance = new ExampleType();
+			Assert.AreEqual("Method3", method.Name);
+		}
+
+		[TestMethod]
 		public void GetConstructedGenericMethodInfo()
 		{
 			var genericInfo = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameterless(x => x.GenericMethod<T1>);
