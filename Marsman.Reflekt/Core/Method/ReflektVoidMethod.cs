@@ -4,20 +4,20 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class VoidMethodReflekt<T>
+    public class ReflektVoidMethod<T>
     {
-        private Func<Expression, MethodReflekt<T>> _expressionVisitor;
+        private Func<Expression, MethodReflektor<T>> _expressionVisitor;
 
-        internal VoidMethodReflekt(Func<Expression, MethodReflekt<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
+        internal ReflektVoidMethod(Func<Expression, MethodReflektor<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
 
-        public VoidMethodReflekt<T> WithTypeArguments(params Type[] types)
+        public ReflektVoidMethod<T> WithTypeArguments(params Type[] types)
         {
-            return new VoidMethodReflekt<T>(x => new GenericMethodReflekt<T>(x, types));
+            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, types));
         }
 
-        public VoidMethodReflekt<T> GenericDefinition()
+        public ReflektVoidMethod<T> GenericDefinition()
         {
-            return new VoidMethodReflekt<T>(x => new GenericMethodReflekt<T>(x, new Type[] { }));
+            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, new Type[] { }));
         }
 
         public MethodInfo Parameterless(Expression<Func<T, Action>> selector)

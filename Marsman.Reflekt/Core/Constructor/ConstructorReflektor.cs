@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class ConstructorReflekt<T> : MemberReflekt<T, ConstructorInfo>
+    internal class ConstructorReflektor<T> : MemberReflektor<T, ConstructorInfo>
     {
-        internal ConstructorReflekt(Expression ex) : base(ex) { }
+        internal ConstructorReflektor(Expression ex) : base(ex) { }
 
         public override ConstructorInfo Value
         {

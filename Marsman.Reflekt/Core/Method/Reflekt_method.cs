@@ -11,23 +11,23 @@ namespace Marsman.Reflekt
 {
     public partial class Reflekt<T>
     {
-        public static VoidMethodReflekt<T> Method()
+        public static ReflektVoidMethod<T> Method()
         {
-            return new VoidMethodReflekt<T>(x => new MethodReflekt<T>(x));
+            return new ReflektVoidMethod<T>(x => new MethodReflektor<T>(x));
         }
 
-        public static ReturnMethodReflekt<T, Treturn> Method<Treturn>()
+        public static ReflektReturnMethod<T, Treturn> Method<Treturn>()
         {
-            return new ReturnMethodReflekt<T, Treturn>(x => new MethodReflekt<T>(x));
+            return new ReflektReturnMethod<T, Treturn>(x => new MethodReflektor<T>(x));
         }
 
-        public VoidMethodReflekt<T> method()
+        public ReflektVoidMethod<T> method()
         {
 			return Method();
 
 		}
 
-        public ReturnMethodReflekt<T, Treturn> method<Treturn>()
+        public ReflektReturnMethod<T, Treturn> method<Treturn>()
         {
 			return Method<Treturn>();
         }

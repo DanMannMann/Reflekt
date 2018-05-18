@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class MethodReflekt<T> : MemberReflekt<T, MethodInfo>
+	internal class MethodReflektor<T> : MemberReflektor<T, MethodInfo>
     {
-        internal MethodReflekt(Expression ex) : base(ex) { }
+        internal MethodReflektor(Expression ex) : base(ex) { }
 
         public override MethodInfo Value
         {

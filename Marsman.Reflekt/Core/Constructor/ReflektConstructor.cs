@@ -4,21 +4,21 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class ConstructorSelectorReflekt<T>
+    public class ReflektConstructor<T>
     {
-        Func<Expression, ConstructorReflekt<T>> _expressionVisitor;
+        Func<Expression, ConstructorReflektor<T>> _expressionVisitor;
 
-        public ConstructorSelectorReflekt<T> WithTypeArguments(params Type[] types)
-        {
-            return new ConstructorSelectorReflekt<T>(x => new GenericConstructorReflekt<T>(x, types));
-        }
-
-        public ConstructorSelectorReflekt(Func<Expression, ConstructorReflekt<T>> expressionVisitor)
+        internal ReflektConstructor(Func<Expression, ConstructorReflektor<T>> expressionVisitor)
         {
             _expressionVisitor = expressionVisitor;
-        }
+		}
 
-        public ConstructorInfo Parameterless(Expression<Func<T>> selector)
+		public ReflektConstructor<T> WithTypeArguments(params Type[] types)
+		{
+			return new ReflektConstructor<T>(x => new GenericConstructorReflektor<T>(x, types));
+		}
+
+		public ConstructorInfo Parameterless(Expression<Func<T>> selector)
         {
             return _expressionVisitor(selector).Value;
         }

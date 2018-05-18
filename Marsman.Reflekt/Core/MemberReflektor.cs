@@ -3,11 +3,11 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public abstract class MemberReflekt<T, Tmember> where Tmember : MemberInfo
+	internal abstract class MemberReflektor<T, Tmember> where Tmember : MemberInfo
     {
         protected Expression Selector { get; private set; }
 
-        protected MemberReflekt(Expression selector)
+        protected MemberReflektor(Expression selector)
         {
             Selector = selector;
         }
