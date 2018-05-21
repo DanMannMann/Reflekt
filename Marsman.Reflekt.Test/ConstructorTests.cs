@@ -62,7 +62,7 @@ namespace Marsman.Reflekt.Test
 			FailureTest<ArgumentException>(typeof(int));
 		}
 
-		private void SuccessfulTest(Type[] typeArgs, Func<ConstructorSelectorReflekt<GenericType<T1>>, ConstructorInfo> operation, string expectedParameterReport, object[] parameters = null)
+		private void SuccessfulTest(Type[] typeArgs, Func<ReflektConstructor<GenericType<T1>>, ConstructorInfo> operation, string expectedParameterReport, object[] parameters = null)
 		{
 			var genericTypeConstructorInfo = operation(Reflekt<GenericType<T1>>.Constructor().WithTypeArguments(typeArgs ?? new Type[0]));
 

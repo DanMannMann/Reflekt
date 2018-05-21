@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marsman.Reflekt.Visitors
 {
-    public class PropertyVisitor : ExpressionVisitor
+    internal class PropertyVisitor : ExpressionVisitor
     {
         private PropertyInfo result;
 

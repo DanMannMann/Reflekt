@@ -4,20 +4,20 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class ReturnMethodReflekt<T, Tout>
+    public class ReflektReturnMethod<T, Tout>
     {
-        private Func<Expression, MethodReflekt<T>> _expressionVisitor;
+        private Func<Expression, MethodReflektor<T>> _expressionVisitor;
 
-        internal ReturnMethodReflekt(Func<Expression, MethodReflekt<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
+        internal ReflektReturnMethod(Func<Expression, MethodReflektor<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
 
-        public ReturnMethodReflekt<T, Tout> WithTypeArguments(params Type[] types)
+        public ReflektReturnMethod<T, Tout> WithTypeArguments(params Type[] types)
         {
-            return new ReturnMethodReflekt<T, Tout>(x => new GenericMethodReflekt<T>(x, types));
+            return new ReflektReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, types));
         }
 
-        public ReturnMethodReflekt<T, Tout> GenericDefinition()
+        public ReflektReturnMethod<T, Tout> GenericDefinition()
         {
-            return new ReturnMethodReflekt<T, Tout>(x => new GenericMethodReflekt<T>(x, new Type[] { }));
+            return new ReflektReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, new Type[] { }));
         }
 
         public MethodInfo Parameterless(Expression<Func<T, Func<Tout>>> selector)

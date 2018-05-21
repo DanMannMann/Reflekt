@@ -9,7 +9,7 @@ namespace Marsman.Reflekt.Visitors
     {
         private MethodInfo result;
 
-        private MethodVisitor() { }
+        protected MethodVisitor() { }
 
         public static MethodInfo GetMethodInfo(Expression ex)
         {
@@ -22,12 +22,36 @@ namespace Marsman.Reflekt.Visitors
             return vis.result;
         }
 
-        protected override Expression VisitMethodCall(MethodCallExpression node)
+		public static MethodInfo GetMethodInfo(Expression ex, Type[] types)
+		{
+			return ReplaceTypeParameters(GetMethodInfo(ex), types);
+		}
+
+		protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             result = (MethodInfo)(node.Object as ConstantExpression).Value;
             throw new VisitStoppedException();
-        }
-    }
+		}
+
+		private static MethodInfo ReplaceTypeParameters(MethodInfo concrete, Type[] types)
+		{
+			var genericDef = concrete.GetGenericMethodDefinition();
+			var genericTypeParameters = genericDef.GetGenericArguments().ToList();
+
+			if (types.Length == 0)
+			{
+				return genericDef;
+			}
+			else if (genericTypeParameters.Count != types.Length)
+			{
+				throw new InvalidOperationException("Wrong number of generic argument values specified. This method requires " + genericTypeParameters.Count + " generic type arguments");
+			}
+			else
+			{
+				return genericDef.MakeGenericMethod(types);
+			}
+		}
+	}
 
     public class VisitStoppedException : Exception { }
 }

@@ -7,14 +7,14 @@ namespace Marsman.Reflekt
 {
     public partial class Reflekt<T>
     {
-        public static ConstructorSelectorReflekt<T> Constructor()
+        public static ReflektConstructor<T> Constructor()
         {
-            return new ConstructorSelectorReflekt<T>(x => new ConstructorReflekt<T>(x));
+            return new ReflektConstructor<T>(x => new ConstructorReflektor<T>(x));
         }
 
-        public ConstructorSelectorReflekt<T> constructor()
+        public ReflektConstructor<T> constructor()
         {
-            return new ConstructorSelectorReflekt<T>(x => new ConstructorReflekt<T>(x));
+			return Constructor();
         }
     }
 }
