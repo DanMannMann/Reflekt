@@ -1,4 +1,6 @@
-﻿namespace Marsman.Reflekt.Test
+﻿using System.Collections.Generic;
+
+namespace Marsman.Reflekt.Test
 {
 	class ExampleType
 	{
@@ -17,5 +19,13 @@
 		public string GenericMethod<T>(T input) where T : class { return "Hello world with input " + input + ". Type is:" + typeof(T).Name; }
 
 		public T GenericMethodEx<T>(T input) where T : class { return input; }
+		public void GenericVoidMethod<T>(T input, Collector<T> collector) where T : class { collector.List.Add(input); }
+		public void GenericVoidMethodEx<T>(T input) where T : class {  }
+		public Collector<T> NestedGenericMethod<T>(T input, Collector<T> collector) where T : class { collector.List.Add(input); return collector; }
 	}
+
+	public class Collector<T>
+    {
+		public List<T> List { get; } = new List<T>();
+    }
 }

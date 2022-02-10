@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Marsman.Reflekt.Test
@@ -11,24 +12,37 @@ namespace Marsman.Reflekt.Test
 		[TestMethod]
 		public void GetDelegate()
 		{
-			var method = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethodEx);
-			var @delegate = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).AsDelegate().Parameters<T1>(x => x.GenericMethodEx);
 			var instance = new ExampleType();
-			var sw1 = System.Diagnostics.Stopwatch.StartNew();
-            for (var i = 0; i < 20000000; i++)
-			{
-				var methodResult = method.Invoke(instance, new object[] { "test input" });
-			}
-			sw1.Stop();
-			Console.WriteLine(sw1);
-			var sw2 = System.Diagnostics.Stopwatch.StartNew();
-			for (var i = 0; i < 20000000; i++)
-			{
-				var delegateResult = @delegate.Invoke(instance, "test input");
-			}
-			sw2.Stop();
-			Console.WriteLine(sw2);
-			Console.ReadLine();
+			var @delegate = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1>(x => x.GenericMethodEx);
+			var delegateResult = @delegate.Invoke(instance, "test input");
+			Assert.AreEqual("test input", delegateResult);
+		}
+
+		[TestMethod]
+		public void GetDelegateNestedGeneric()
+		{
+			var collector = new Collector<string>();
+			var instance = new ExampleType();
+			var @delegate = Reflekt<ExampleType>.Method<Collector<T1>>().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1, Collector<T1>>(x => x.NestedGenericMethod);
+			var delegateResult = @delegate.Invoke(instance, "test input", collector);
+			Assert.AreSame(collector, delegateResult);
+		}
+		[TestMethod]
+		public void GetVoidDelegate()
+		{
+			var instance = new ExampleType();
+			var @delegate = Reflekt<ExampleType>.Method().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1>(x => x.GenericVoidMethodEx);
+			@delegate.Invoke(instance, "test input");
+		}
+
+		[TestMethod]
+		public void GetVoidDelegateNestedGeneric()
+		{
+			var collector = new Collector<string>();
+			var instance = new ExampleType();
+			var @delegate = Reflekt<ExampleType>.Method().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1,Collector<T1>>(x => x.GenericVoidMethod);
+			@delegate.Invoke(instance, "test input", collector);
+			Assert.AreEqual("test input", collector.List.Single());
 		}
 
 		[TestMethod]
@@ -101,7 +115,7 @@ namespace Marsman.Reflekt.Test
 			var genericInfo = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethod<T1>);
 			var instance = new ExampleType();
 			Assert.AreEqual("GenericMethod", genericInfo.Name);
-			Assert.AreEqual("Hello world from the overload. Type is:String", genericInfo.Invoke(instance, new object[] { "test" }));
+			Assert.AreEqual("Hello world with input test. Type is:String", genericInfo.Invoke(instance, new object[] { "test" }));
 		}
 
 		[TestMethod]

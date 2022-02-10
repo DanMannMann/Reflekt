@@ -14,20 +14,10 @@ namespace Marsman.Reflekt
             public object WrapperDelegate { get; set; }
             public object TypedDelegate { get; set; }
         }
-        private class TypeMask
-        {
-            public bool IsGeneric { get; set; }
-            public int GenericParameterPosition { get; set; }
-            public Type Mask<T>(Type[] typeArguments)
-            {
-                if (IsGeneric) return typeArguments[GenericParameterPosition];
-                return typeof(T);
-            }
-        }
 
         private class MethodTypesMask
         {
-            public TypeMask[] Parameter { get; set; }
+            public TypeMask[] Parameters { get; set; }
             public TypeMask Return { get; set; }
         }
 
@@ -109,7 +99,7 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[3];
                 var factoryTypeArguments = new Type[2];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
                 delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition1.MakeGenericMethod(factoryTypeArguments);
@@ -146,8 +136,8 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[4];
                 var factoryTypeArguments = new Type[3];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
                 delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition2.MakeGenericMethod(factoryTypeArguments);
@@ -184,9 +174,9 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[5];
                 var factoryTypeArguments = new Type[4];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
                 delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition3.MakeGenericMethod(factoryTypeArguments);
@@ -223,10 +213,10 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[6];
                 var factoryTypeArguments = new Type[5];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
-                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameter[3].Mask<T4>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
+                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameters[3].Mask<T4>(types);
                 delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition4.MakeGenericMethod(factoryTypeArguments);
@@ -263,11 +253,11 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[7];
                 var factoryTypeArguments = new Type[6];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
-                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameter[3].Mask<T4>(types);
-                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameter[4].Mask<T5>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
+                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameters[3].Mask<T4>(types);
+                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameters[4].Mask<T5>(types);
                 delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition5.MakeGenericMethod(factoryTypeArguments);
@@ -304,12 +294,12 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[8];
                 var factoryTypeArguments = new Type[7];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
-                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameter[3].Mask<T4>(types);
-                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameter[4].Mask<T5>(types);
-                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameter[5].Mask<T6>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
+                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameters[3].Mask<T4>(types);
+                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameters[4].Mask<T5>(types);
+                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameters[5].Mask<T6>(types);
                 delegateTypeArguments[7] = factoryTypeArguments[6] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition6.MakeGenericMethod(factoryTypeArguments);
@@ -346,13 +336,13 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[9];
                 var factoryTypeArguments = new Type[8];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
-                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameter[3].Mask<T4>(types);
-                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameter[4].Mask<T5>(types);
-                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameter[5].Mask<T6>(types);
-                delegateTypeArguments[7] = factoryTypeArguments[6] = typeMasks.Parameter[6].Mask<T7>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
+                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameters[3].Mask<T4>(types);
+                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameters[4].Mask<T5>(types);
+                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameters[5].Mask<T6>(types);
+                delegateTypeArguments[7] = factoryTypeArguments[6] = typeMasks.Parameters[6].Mask<T7>(types);
                 delegateTypeArguments[8] = factoryTypeArguments[7] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition7.MakeGenericMethod(factoryTypeArguments);
@@ -389,14 +379,14 @@ namespace Marsman.Reflekt
                 var delegateTypeArguments = new Type[10];
                 var factoryTypeArguments = new Type[9];
                 delegateTypeArguments[0] = typeof(Ttarget);
-                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameter[0].Mask<T1>(types);
-                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameter[1].Mask<T2>(types);
-                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameter[2].Mask<T3>(types);
-                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameter[3].Mask<T4>(types);
-                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameter[4].Mask<T5>(types);
-                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameter[5].Mask<T6>(types);
-                delegateTypeArguments[7] = factoryTypeArguments[6] = typeMasks.Parameter[6].Mask<T7>(types);
-                delegateTypeArguments[8] = factoryTypeArguments[7] = typeMasks.Parameter[7].Mask<T8>(types);
+                delegateTypeArguments[1] = factoryTypeArguments[0] = typeMasks.Parameters[0].Mask<T1>(types);
+                delegateTypeArguments[2] = factoryTypeArguments[1] = typeMasks.Parameters[1].Mask<T2>(types);
+                delegateTypeArguments[3] = factoryTypeArguments[2] = typeMasks.Parameters[2].Mask<T3>(types);
+                delegateTypeArguments[4] = factoryTypeArguments[3] = typeMasks.Parameters[3].Mask<T4>(types);
+                delegateTypeArguments[5] = factoryTypeArguments[4] = typeMasks.Parameters[4].Mask<T5>(types);
+                delegateTypeArguments[6] = factoryTypeArguments[5] = typeMasks.Parameters[5].Mask<T6>(types);
+                delegateTypeArguments[7] = factoryTypeArguments[6] = typeMasks.Parameters[6].Mask<T7>(types);
+                delegateTypeArguments[8] = factoryTypeArguments[7] = typeMasks.Parameters[7].Mask<T8>(types);
                 delegateTypeArguments[9] = factoryTypeArguments[8] = typeMasks.Return.Mask<Tout>(types);
                 var delegateType = GetFuncType(delegateTypeArguments);
                 var factory = CreateDelegateRecordDefinition8.MakeGenericMethod(factoryTypeArguments);
@@ -433,25 +423,32 @@ namespace Marsman.Reflekt
                 var parameterMasks = new TypeMask[parms.Length];
                 for (var i = 0; i < parms.Length; i++)
                 {
-                    if (parms[i].ParameterType.IsGenericMethodParameter)
-                    {
-                        parameterMasks[i] = new TypeMask { IsGeneric = true, GenericParameterPosition = parms[i].ParameterType.GenericParameterPosition };
-                    }
-                    else
-                    {
-                        parameterMasks[i] = new TypeMask { IsGeneric = false, GenericParameterPosition = -1 };
-                    }
+                    parameterMasks[i] = BuildTypeMask(parms[i].ParameterType);
                 }
                 var result = new MethodTypesMask
                 {
-                    Parameter = parameterMasks,
-                    Return = genericMethodDefinition.ReturnType.IsGenericMethodParameter
-                                         ? new TypeMask { IsGeneric = true, GenericParameterPosition = genericMethodDefinition.ReturnType.GenericParameterPosition }
-                                         : new TypeMask { IsGeneric = false, GenericParameterPosition = -1 }
-
+                    Parameters = parameterMasks,
+                    Return = BuildTypeMask(genericMethodDefinition.ReturnType)
                 };
                 return result;
             });
+        }
+
+        private static TypeMask BuildTypeMask(Type parm)
+        {
+            if (parm.IsGenericMethodParameter)
+            {
+                return new TypeMask { IsGeneric = true, GenericParameterPosition = parm.GenericParameterPosition };
+            }
+            else
+            {
+                var result = new TypeMask { IsGeneric = false, GenericParameterPosition = -1 };
+                if (parm.IsGenericType)
+                {
+                    result.Parameters = parm.GenericTypeArguments.Select(x => BuildTypeMask(x)).ToArray();
+                }
+                return result;
+            }
         }
     }
 }
