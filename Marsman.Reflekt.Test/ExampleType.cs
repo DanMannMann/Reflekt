@@ -14,6 +14,8 @@
 
 		public string GenericMethod<T>() where T : class { return "Hello world. Type is:" + typeof(T).Name; }
 
-		public string GenericMethod<T>(T input) where T : class { return "Hello world from the overload. Type is:" + typeof(T).Name; }
+		public string GenericMethod<T>(T input) where T : class { return "Hello world with input " + input + ". Type is:" + typeof(T).Name; }
+
+		public T GenericMethodEx<T>(T input) where T : class { return input; }
 	}
 }

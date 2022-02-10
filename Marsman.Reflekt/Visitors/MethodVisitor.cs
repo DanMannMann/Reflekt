@@ -5,22 +5,16 @@ using System.Linq;
 
 namespace Marsman.Reflekt.Visitors
 {
-    public class MethodVisitor : ExpressionVisitor
-    {
-        private MethodInfo result;
-
+    public class MethodVisitor : ReflektVisitor<MethodInfo>
+	{
         protected MethodVisitor() { }
 
         public static MethodInfo GetMethodInfo(Expression ex)
         {
             var vis = new MethodVisitor();
-            try
-            {
-                vis.Visit(ex);
-            }
-            catch (VisitStoppedException) { }
-            return vis.result;
-        }
+			vis.Visit(ex);
+			return vis.Result;
+		}
 
 		public static MethodInfo GetMethodInfo(Expression ex, Type[] types)
 		{
@@ -29,11 +23,11 @@ namespace Marsman.Reflekt.Visitors
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            result = (MethodInfo)(node.Object as ConstantExpression).Value;
-            throw new VisitStoppedException();
+			Result = (MethodInfo)(node.Object as ConstantExpression).Value;
+			return node;
 		}
 
-		private static MethodInfo ReplaceTypeParameters(MethodInfo concrete, Type[] types)
+        private static MethodInfo ReplaceTypeParameters(MethodInfo concrete, Type[] types)
 		{
 			var genericDef = concrete.GetGenericMethodDefinition();
 			var genericTypeParameters = genericDef.GetGenericArguments().ToList();
@@ -52,6 +46,4 @@ namespace Marsman.Reflekt.Visitors
 			}
 		}
 	}
-
-    public class VisitStoppedException : Exception { }
 }

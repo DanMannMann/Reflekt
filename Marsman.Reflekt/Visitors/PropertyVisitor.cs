@@ -8,27 +8,21 @@ using System.Threading.Tasks;
 
 namespace Marsman.Reflekt.Visitors
 {
-    internal class PropertyVisitor : ExpressionVisitor
+    internal class PropertyVisitor : ReflektVisitor<PropertyInfo>
     {
-        private PropertyInfo result;
-
         private PropertyVisitor() { }
 
         public static PropertyInfo GetPropertyInfo(Expression ex)
         {
             var vis = new PropertyVisitor();
-            try
-            {
-                vis.Visit(ex);
-            }
-            catch (VisitStoppedException) { }
-            return vis.result;
+            vis.Visit(ex);
+            return vis.Result;
         }
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            result = node.Member as PropertyInfo;
-            throw new VisitStoppedException();
+            Result = node.Member as PropertyInfo;
+            return node;
         }
     }
 

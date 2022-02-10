@@ -6,18 +6,18 @@ namespace Marsman.Reflekt
 {
     public class ReflektVoidMethod<T>
     {
-        private Func<Expression, MethodReflektor<T>> _expressionVisitor;
+        internal Func<Expression, MethodReflektor<T>> _expressionVisitor;
 
         internal ReflektVoidMethod(Func<Expression, MethodReflektor<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
 
-        public ReflektVoidMethod<T> WithTypeArguments(params Type[] types)
+        public ReflektGenericVoidMethod<T> WithTypeArguments(params Type[] types)
         {
-            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, types));
+            return new ReflektGenericVoidMethod<T>(x => new GenericMethodReflektor<T>(x, types), types);
         }
 
-        public ReflektVoidMethod<T> GenericDefinition()
+        public ReflektGenericVoidMethod<T> GenericDefinition()
         {
-            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, new Type[] { }));
+            return new ReflektGenericVoidMethod<T>(x => new GenericMethodReflektor<T>(x, Type.EmptyTypes), Type.EmptyTypes);
         }
 
         public MethodInfo Parameterless(Expression<Func<T, Action>> selector)

@@ -9,6 +9,29 @@ namespace Marsman.Reflekt.Test
 		private readonly Type typeKnownAtRuntime = typeof(string);
 
 		[TestMethod]
+		public void GetDelegate()
+		{
+			var method = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethodEx);
+			var @delegate = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).AsDelegate().Parameters<T1>(x => x.GenericMethodEx);
+			var instance = new ExampleType();
+			var sw1 = System.Diagnostics.Stopwatch.StartNew();
+            for (var i = 0; i < 20000000; i++)
+			{
+				var methodResult = method.Invoke(instance, new object[] { "test input" });
+			}
+			sw1.Stop();
+			Console.WriteLine(sw1);
+			var sw2 = System.Diagnostics.Stopwatch.StartNew();
+			for (var i = 0; i < 20000000; i++)
+			{
+				var delegateResult = @delegate.Invoke(instance, "test input");
+			}
+			sw2.Stop();
+			Console.WriteLine(sw2);
+			Console.ReadLine();
+		}
+
+		[TestMethod]
 		public void GetMethodInfo()
 		{
 			var method = Reflekt<ExampleType>.Method<double>().Parameterless(x => x.Method1);

@@ -26,5 +26,7 @@ namespace Marsman.Reflekt
     public sealed class T6 { }
     public sealed class T7 { }
     public sealed class T8 { }
+    public sealed class TReturn { }
+    public sealed class TOut { }
     #endregion
 }

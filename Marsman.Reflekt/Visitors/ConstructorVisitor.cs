@@ -6,21 +6,17 @@ using System.Collections.Generic;
 
 namespace Marsman.Reflekt.Visitors
 {
-    public class ConstructorVisitor : ExpressionVisitor
-    {
-        private ConstructorInfo result;
 
+
+    public class ConstructorVisitor : ReflektVisitor<ConstructorInfo>
+	{
         private ConstructorVisitor() { }
 
         public static ConstructorInfo GetConstructorInfo(Expression ex)
         {
             var vis = new ConstructorVisitor();
-            try
-            {
-                vis.Visit(ex);
-            }
-            catch (VisitStoppedException) { }
-            return vis.result;
+			vis.Visit(ex);
+			return vis.Result;
         }
 
 		public static ConstructorInfo GetConstructorInfo(Expression ex, Type[] types)
@@ -28,11 +24,10 @@ namespace Marsman.Reflekt.Visitors
 			return ReplaceTypeParameters(GetConstructorInfo(ex), types);
 		}
 
-
 		protected override Expression VisitNew(NewExpression node)
         {
-            result = node.Constructor;
-            throw new VisitStoppedException();
+			Result = node.Constructor;
+			return node;
         }
 
 		private static ConstructorInfo ReplaceTypeParameters(ConstructorInfo ctor, Type[] types)
