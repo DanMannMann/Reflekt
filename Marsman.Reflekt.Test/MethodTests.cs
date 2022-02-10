@@ -13,7 +13,7 @@ namespace Marsman.Reflekt.Test
 		public void GetDelegate()
 		{
 			var instance = new ExampleType();
-			var @delegate = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1>(x => x.GenericMethodEx);
+			var @delegate = Reflekt<ExampleType>.Method<T1>().AsDelegate(typeof(string)).Parameters<T1>(x => x.GenericMethodEx);
 			var delegateResult = @delegate.Invoke(instance, "test input");
 			Assert.AreEqual("test input", delegateResult);
 		}
@@ -23,15 +23,41 @@ namespace Marsman.Reflekt.Test
 		{
 			var collector = new Collector<string>();
 			var instance = new ExampleType();
-			var @delegate = Reflekt<ExampleType>.Method<Collector<T1>>().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1, Collector<T1>>(x => x.NestedGenericMethod);
+			var @delegate = Reflekt<ExampleType>.Method<Collector<T1>>().AsDelegate(typeof(string)).Parameters<T1, Collector<T1>>(x => x.NestedGenericMethod);
 			var delegateResult = @delegate.Invoke(instance, "test input", collector);
 			Assert.AreSame(collector, delegateResult);
 		}
+
+		[TestMethod]
+		public void GetDelegateNestedGenericFactory()
+		{
+			var collector = new Collector<string>();
+			var instance = new ExampleType();
+			var delegateFactory = Reflekt<ExampleType>.Method<Collector<T1>>().AsDelegateFactory().Parameters<T1, Collector<T1>>(x => x.NestedGenericMethod);
+			var @delegate = delegateFactory.CreateWithTypeArguments(typeof(string));
+			var delegateResult = @delegate.Invoke(instance, "test input", collector);
+			Assert.AreSame(collector, delegateResult);
+			Assert.IsTrue(collector.List.Contains("test input"));
+
+			var intCollector = new Collector<int>();
+			@delegate = delegateFactory.CreateWithTypeArguments(typeof(int));
+			delegateResult = @delegate.Invoke(instance, 69, intCollector);
+			Assert.AreSame(intCollector, delegateResult);
+			Assert.IsTrue(intCollector.List.Contains(69));
+
+			var otherInstance = new ExampleType();
+			var exCollector = new Collector<ExampleType>();
+			@delegate = delegateFactory.CreateWithTypeArguments(typeof(ExampleType));
+			delegateResult = @delegate.Invoke(instance, otherInstance, exCollector);
+			Assert.AreSame(exCollector, delegateResult);
+			Assert.IsTrue(exCollector.List.Contains(otherInstance));
+		}
+
 		[TestMethod]
 		public void GetVoidDelegate()
 		{
 			var instance = new ExampleType();
-			var @delegate = Reflekt<ExampleType>.Method().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1>(x => x.GenericVoidMethodEx);
+			var @delegate = Reflekt<ExampleType>.Method().AsDelegate(typeof(string)).Parameters<T1>(x => x.GenericVoidMethodEx);
 			@delegate.Invoke(instance, "test input");
 		}
 
@@ -40,7 +66,7 @@ namespace Marsman.Reflekt.Test
 		{
 			var collector = new Collector<string>();
 			var instance = new ExampleType();
-			var @delegate = Reflekt<ExampleType>.Method().WithTypeArguments(typeof(string)).AsDelegate().Parameters<T1,Collector<T1>>(x => x.GenericVoidMethod);
+			var @delegate = Reflekt<ExampleType>.Method().AsDelegate(typeof(string)).Parameters<T1,Collector<T1>>(x => x.GenericVoidMethod);
 			@delegate.Invoke(instance, "test input", collector);
 			Assert.AreEqual("test input", collector.List.Single());
 		}
@@ -92,7 +118,7 @@ namespace Marsman.Reflekt.Test
 		[TestMethod]
 		public void GetUnconstructedGenericMethodInfo()
 		{
-			var genericInfo = Reflekt<ExampleType>.Method<string>().GenericDefinition().Parameterless(x => x.GenericMethod<T1>);
+			var genericInfo = Reflekt<ExampleType>.Method<string>().AsGenericDefinition().Parameterless(x => x.GenericMethod<T1>);
 			var instance = new ExampleType();
 			Assert.AreEqual("GenericMethod", genericInfo.Name);
 			Assert.ThrowsException<InvalidOperationException>(() => genericInfo.Invoke(instance, null));

@@ -4,21 +4,37 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class ReflektVoidMethod<T>
+    public class ReflektVoidMethod<T> : ReflektVoidMethodBase<T>
     {
-        internal Func<Expression, MethodReflektor<T>> _expressionVisitor;
-
         internal ReflektVoidMethod(Func<Expression, MethodReflektor<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
 
-        public ReflektGenericVoidMethod<T> WithTypeArguments(params Type[] types)
+        public ReflektVoidDelegate<T> AsDelegate(params Type[] typeArguments)
         {
-            return new ReflektGenericVoidMethod<T>(x => new GenericMethodReflektor<T>(x, types), types);
+            return new ReflektVoidDelegate<T>(_expressionVisitor, typeArguments);
         }
 
-        public ReflektGenericVoidMethod<T> GenericDefinition()
+        public ReflektVoidDelegateFactorySource<T> AsDelegateFactory()
         {
-            return new ReflektGenericVoidMethod<T>(x => new GenericMethodReflektor<T>(x, Type.EmptyTypes), Type.EmptyTypes);
+            return new ReflektVoidDelegateFactorySource<T>(_expressionVisitor);
         }
+
+        public ReflektVoidMethodBase<T> WithTypeArguments(params Type[] types)
+        {
+            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, types));
+        }
+
+        public ReflektVoidMethodBase<T> AsGenericDefinition()
+        {
+            return new ReflektVoidMethod<T>(x => new GenericMethodReflektor<T>(x, Type.EmptyTypes));
+        }
+
+        [Obsolete("use AsGenericDefinition()")]
+        public ReflektVoidMethod<T> GenericDefinition() => AsGenericDefinition() as ReflektVoidMethod<T>;
+    }
+
+    public abstract class ReflektVoidMethodBase<T>
+    {
+        internal Func<Expression, MethodReflektor<T>> _expressionVisitor;
 
         public MethodInfo Parameterless(Expression<Func<T, Action>> selector)
         {

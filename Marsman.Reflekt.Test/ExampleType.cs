@@ -21,7 +21,7 @@ namespace Marsman.Reflekt.Test
 		public T GenericMethodEx<T>(T input) where T : class { return input; }
 		public void GenericVoidMethod<T>(T input, Collector<T> collector) where T : class { collector.List.Add(input); }
 		public void GenericVoidMethodEx<T>(T input) where T : class {  }
-		public Collector<T> NestedGenericMethod<T>(T input, Collector<T> collector) where T : class { collector.List.Add(input); return collector; }
+		public Collector<T> NestedGenericMethod<T>(T input, Collector<T> collector) { collector.List.Add(input); return collector; }
 	}
 
 	public class Collector<T>

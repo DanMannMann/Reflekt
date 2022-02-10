@@ -5,21 +5,37 @@ using System.Reflection;
 
 namespace Marsman.Reflekt
 {
-    public class ReflektReturnMethod<T, Tout>
+    public class ReflektReturnMethod<T, Tout> : ReflektReturnMethodBase<T, Tout>
     {
-        internal Func<Expression, MethodReflektor<T>> _expressionVisitor;
-
         internal ReflektReturnMethod(Func<Expression, MethodReflektor<T>> expressionVisitor) { _expressionVisitor = expressionVisitor; }
 
-        public ReflektGenericReturnMethod<T, Tout> WithTypeArguments(params Type[] types)
+        public ReflektReturnDelegate<T, Tout> AsDelegate(params Type[] typeArguments)
         {
-            return new ReflektGenericReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, types), types);
+            return new ReflektReturnDelegate<T, Tout>(_expressionVisitor, typeArguments);
         }
 
-        public ReflektGenericReturnMethod<T, Tout> GenericDefinition()
+        public ReflektReturnDelegateFactorySource<T, Tout> AsDelegateFactory()
         {
-            return new ReflektGenericReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, new Type[] { }), null);
+            return new ReflektReturnDelegateFactorySource<T, Tout>(_expressionVisitor);
         }
+
+        public ReflektReturnMethodBase<T,Tout> WithTypeArguments(params Type[] types)
+        {
+            return new ReflektReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, types));
+        }
+
+        public ReflektReturnMethodBase<T, Tout> AsGenericDefinition()
+        {
+            return new ReflektReturnMethod<T, Tout>(x => new GenericMethodReflektor<T>(x, Type.EmptyTypes));
+        }
+
+        [Obsolete("use AsGenericDefinition()")]
+        public ReflektReturnMethodBase<T, Tout> GenericDefinition() => AsGenericDefinition();
+    }
+
+    public abstract class ReflektReturnMethodBase<T,Tout>
+    {
+        internal Func<Expression, MethodReflektor<T>> _expressionVisitor;
 
         public MethodInfo Parameterless(Expression<Func<T, Func<Tout>>> selector)
         {

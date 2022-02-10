@@ -9,8 +9,8 @@ namespace Marsman.Reflekt.Playground
 		{
 			var method = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethod);
 			var methodWithGenericReturnType = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethodEx);
-			var @delegate = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).AsDelegate().Parameters<T1>(x => x.GenericMethod);
-			var delegateWithGenericReturnType = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).AsDelegate().Parameters<T1>(x => x.GenericMethodEx);
+			var @delegate = Reflekt<ExampleType>.Method<string>().AsDelegate(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethod);
+			var delegateWithGenericReturnType = Reflekt<ExampleType>.Method<T1>().AsDelegate(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethodEx);
 			var instance = new ExampleType();
 			var sw = System.Diagnostics.Stopwatch.StartNew();
 			for (var i = 0; i < 20000000; i++)
