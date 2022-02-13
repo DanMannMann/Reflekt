@@ -19,6 +19,15 @@ namespace Marsman.Reflekt.Test
 		}
 
 		[TestMethod]
+		public void GetDelegateNonGeneric()
+		{
+			var instance = new ExampleType();
+			var @delegate = Reflekt<ExampleType>.Method<double>().AsDelegate().Parameters<float>(x => x.Method2);
+			var delegateResult = @delegate.Invoke(instance, 5f);
+			Assert.AreEqual(16d, delegateResult);
+		}
+
+		[TestMethod]
 		public void GetDelegateNestedGeneric()
 		{
 			var collector = new Collector<string>();
@@ -51,6 +60,15 @@ namespace Marsman.Reflekt.Test
 			delegateResult = @delegate.Invoke(instance, otherInstance, exCollector);
 			Assert.AreSame(exCollector, delegateResult);
 			Assert.IsTrue(exCollector.List.Contains(otherInstance));
+		}
+
+		[TestMethod]
+		public void GetDelegateNonGenericFactory()
+		{
+			var instance = new ExampleType();
+			var @delegate = Reflekt<ExampleType>.Method<double>().AsDelegateFactory().Parameters<float>(x => x.Method2);
+			var delegateResult = @delegate.CreateWithTypeArguments().Invoke(instance, 5f);
+			Assert.AreEqual(16d, delegateResult);
 		}
 
 		[TestMethod]

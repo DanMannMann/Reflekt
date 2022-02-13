@@ -4,9 +4,29 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Marsman.Reflekt.Test
 {
-	[TestClass]
+    [TestClass]
 	public class PropertyTests
 	{
+		[TestMethod]
+		public void GetPropertySetterDelegate()
+		{
+			var instance = new ExampleType();
+			instance.Property1 = "old value";
+			var propertyDelegate = Reflekt<ExampleType>.PropertySetterDelegate(x => x.Property1);
+			propertyDelegate(instance, "new value");
+			Assert.AreEqual("new value", instance.Property1);
+		}
+
+		[TestMethod]
+		public void GetPropertyGetterDelegate()
+		{
+			var instance = new ExampleType();
+			instance.Property1 = "old value";
+			var propertyDelegate = Reflekt<ExampleType>.PropertyGetterDelegate(x => x.Property1);
+			var result = propertyDelegate(instance);
+			Assert.AreEqual("old value", result);
+		}
+
 		[TestMethod]
 		public void GetPropertyName()
 		{

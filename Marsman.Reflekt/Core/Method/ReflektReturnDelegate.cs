@@ -14,6 +14,14 @@ namespace Marsman.Reflekt
         public MethodInfo MethodDefinition { get; set; }
     }
 
+    internal class EmptyMethodTypesMask : MethodTypesMask
+    {
+        public EmptyMethodTypesMask()
+        {
+
+        }
+    }
+
     internal class TypeMask
     {
         public bool IsGeneric { get; set; }
@@ -651,9 +659,12 @@ namespace Marsman.Reflekt
     {
         internal MethodTypesMask GetTypeMasks(MethodInfo method)
         {
-            return FactoryCaches.ParameterTypeMasks.GetOrAdd(method.IsGenericMethodDefinition ? method : method.GetGenericMethodDefinition(), genericMethodDefinition =>
+            method = !method.IsGenericMethod || method.IsGenericMethodDefinition
+                        ? method
+                        : method.GetGenericMethodDefinition();
+            return FactoryCaches.ParameterTypeMasks.GetOrAdd(method, m =>
             {
-                var parms = genericMethodDefinition.GetParameters();
+                var parms = m.GetParameters();
                 var parameterMasks = new TypeMask[parms.Length];
                 for (var i = 0; i < parms.Length; i++)
                 {
@@ -662,8 +673,8 @@ namespace Marsman.Reflekt
                 var result = new MethodTypesMask
                 {
                     Parameters = parameterMasks,
-                    Return = BuildTypeMask(genericMethodDefinition.ReturnType),
-                    MethodDefinition = genericMethodDefinition
+                    Return = BuildTypeMask(m.ReturnType),
+                    MethodDefinition = m
                 };
                 return result;
             });
@@ -695,12 +706,13 @@ namespace Marsman.Reflekt
         internal static ConcurrentDictionary<MethodInfo, DelegateRecord> DelegateTypes = new ConcurrentDictionary<MethodInfo, DelegateRecord>();
         internal static ConcurrentDictionary<MethodInfo, MethodTypesMask> ParameterTypeMasks = new ConcurrentDictionary<MethodInfo, MethodTypesMask>();
 
-        internal static MethodInfo GetTypedMethod(MethodInfo genericDefinition, params Type[] types)
+        internal static MethodInfo GetTypedMethod(MethodInfo method, params Type[] types)
         {
+            if (types.Length == 0) return method; // allows support for non-generic methods, which is useful
             var signature = new HashCode();
-            signature.Add(genericDefinition.GetHashCode());
+            signature.Add(method.GetHashCode());
             foreach (var type in types) signature.Add(type.GetHashCode());
-            return TypedMethods.GetOrAdd(signature.ToHashCode(), hash => genericDefinition.MakeGenericMethod(types));
+            return TypedMethods.GetOrAdd(signature.ToHashCode(), hash => method.MakeGenericMethod(types));
         }
 
         internal static Type GetActionType(params Type[] types)
