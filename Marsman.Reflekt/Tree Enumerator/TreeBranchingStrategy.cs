@@ -2,8 +2,8 @@
 {
     public enum TreeBranchingStrategy
     {
-        PropertyValueIsValueType,
-        PropertyTypeIsValueType,
+        PropertyValueIsTvalue,
+        PropertyTypeIsTvalue,
         AllProperties
     }
 }

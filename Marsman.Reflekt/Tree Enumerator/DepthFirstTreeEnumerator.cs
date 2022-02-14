@@ -3,28 +3,30 @@ using System.Runtime.Serialization;
 
 namespace Marsman.Reflekt
 {
-    public class DepthFirstTreeEnumerator<Tvalue> : DepthFirstTreeEnumeratorBase<Tvalue, Tvalue>
+    public sealed class DepthFirstTreeEnumerator<Tvalue> : DepthFirstTreeEnumeratorBase<Tvalue, Tvalue>
     {
         public DepthFirstTreeEnumerator(object rootObject,
-                              TreeBranchingStrategy branchingStrategy = TreeBranchingStrategy.PropertyValueIsValueType)
-            : this(rootObject, 0, new ObjectIDGenerator(), branchingStrategy)
+                              TreeBranchingStrategy branchingStrategy = TreeBranchingStrategy.AllProperties,
+                              Filter[] filters = null)
+            : this(rootObject, 0, new ObjectIDGenerator(), branchingStrategy, filters)
         {
         }
 
         private DepthFirstTreeEnumerator(object rootObject,
                                int depth,
                                ObjectIDGenerator loopDetector,
-                               TreeBranchingStrategy branchingStrategy)
-            : base(rootObject, depth, loopDetector, branchingStrategy)
+                               TreeBranchingStrategy branchingStrategy,
+                               Filter[] filters)
+            : base(rootObject, depth, loopDetector, branchingStrategy, filters)
         {
         }
 
-        protected override TreeEnumeratorBase<Tvalue, Tvalue> GetBranchEnumerator(object value)
+        protected sealed override DepthFirstTreeEnumeratorBase<Tvalue, Tvalue> GetBranchEnumerator(object value)
         {
-            return new DepthFirstTreeEnumerator<Tvalue>(value, Depth + 1, LoopDetector, branchingStrategy);
+            return new DepthFirstTreeEnumerator<Tvalue>(value, Depth + 1, LoopDetector, branchingStrategy, filters);
         }
 
-        protected override Tvalue MapValue(Tvalue currentValue)
+        protected sealed override Tvalue MapValue(Tvalue currentValue)
         {
             return currentValue;
         }

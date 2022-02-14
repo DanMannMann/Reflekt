@@ -1,38 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Marsman.Reflekt.Test
 {
-	public interface ITreeNode { }
-	public interface INodeWithSpecialThing 
-	{
-		string SpecialThing { get; set; }
-	}
-	public class Node : ITreeNode
-    {
-		public ITreeNode InterfaceNode { get; set; }
-		public Node ClassNode { get; set; }
-		public object ObjectNode { get; set; }
-	}
-    public class SpecialNode : Node, INodeWithSpecialThing
-    {
-		public string SpecialThing { get; set; } = "special 1";
-	}
-	public class SpecialNode2 : Node, INodeWithSpecialThing
-	{
-		public string SpecialThing { get; set; } = "special 2";
-	}
-	public class NotNode
-	{
-		public ITreeNode InterfaceNode { get; set; }
-		public Node ClassNode { get; set; }
-		public object ObjectNode { get; set; }
-	}
 
-	[TestClass]
+    [TestClass]
 	public class TreeEnumerableTests
 	{
+		// TODO need to put some actual tests in here
 
 		private NotNode simpleTree = new NotNode
 		{
@@ -872,60 +851,94 @@ namespace Marsman.Reflekt.Test
 		};
 
 		[TestMethod]
-		public void Test()
+		public void EnumerateSomeHugeTrees()
+		{
+			var randomTreeFactory = new HugeRandomTreeFactory(5);
+			var tree = randomTreeFactory.Tree;
+			var allBreadthContextResult = tree.AsTreeEnumerableWithContext<object>(
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst,
+				Filter.ExcludeBranchesAndValues<string>(),
+				Filter.ExcludeBranchesAndValues<IEnumerable>(),
+				Filter.ExcludeBranchesAndValues<Uri>(),
+				Filter.ExcludeBranchesAndValues<int>(),
+				Filter.ExcludeValues<NotNode>());
+
+			var allDepthContextResult = tree.AsTreeEnumerableWithContext<object>(
+				Filter.ExcludeBranchesAndValues<string>(),
+				Filter.ExcludeBranchesAndValues<IEnumerable>(),
+				Filter.ExcludeBranchesAndValues<Uri>(),
+				Filter.ExcludeBranchesAndValues<int>(),
+				Filter.ExcludeValues<NotNode>());
+
+			var sw = Stopwatch.StartNew();
+			var g1 = allDepthContextResult.ToList();
+			sw.Stop();
+
+            var sw2 = Stopwatch.StartNew();
+            var g2 = allBreadthContextResult.ToList();
+            sw2.Stop();
+
+            var cnt = randomTreeFactory.Objects.Count(x => x.Object is ITreeNode);
+			var b = g1.Max(x => x.Depth);
+		}
+
+		[TestMethod]
+		public void EnumerateSomeSmallerKnownTrees()
 		{
 			// add some loops
 			(tree.ClassNode.ClassNode.ObjectNode as Node).ObjectNode = tree;
 
-			var allBreadthContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst,
-				branchStrategy: TreeBranchingStrategy.AllProperties);
+			var firstEmptyStringCollection = tree.AsTreeEnumerable<ICollection<string>>()
+											     .FirstOrDefault(x => x.Count() == 0);
+
+			var allBreadthContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst,
+				branchingStrategy: TreeBranchingStrategy.AllProperties);
 
 			var l1 = allBreadthContextResult.ToList();
 			var l2 = allBreadthContextResult.ToList();
 
 
-			Array s;
-			var specialsResult = simpleTree.AsContextualTreeEnumerable<INodeWithSpecialThing>(
-				branchStrategy: TreeBranchingStrategy.AllProperties).ToList();
-			var specialsResult3 = tree.AsContextualTreeEnumerable<INodeWithSpecialThing>(
-				branchStrategy: TreeBranchingStrategy.AllProperties, enumStrategy: TreeEnumerationStrategy.BreadthFirst).ToList();
-			var specialsResult4 = tree.AsContextualTreeEnumerable<INodeWithSpecialThing>(
-				branchStrategy: TreeBranchingStrategy.AllProperties, enumStrategy: TreeEnumerationStrategy.DepthFirst).ToList();
+			var specialsResult = simpleTree.AsTreeEnumerableWithContext<INodeWithSpecialThing>(
+				branchingStrategy: TreeBranchingStrategy.AllProperties).ToList();
+			var specialsResult3 = tree.AsTreeEnumerableWithContext<INodeWithSpecialThing>(
+				branchingStrategy: TreeBranchingStrategy.AllProperties, enumerationStrategy: TreeEnumerationStrategy.BreadthFirst).ToList();
+			var specialsResult4 = tree.AsTreeEnumerableWithContext<INodeWithSpecialThing>(
+				branchingStrategy: TreeBranchingStrategy.AllProperties, enumerationStrategy: TreeEnumerationStrategy.DepthFirst).ToList();
 
 			var propTypeResult = tree.AsTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.PropertyTypeIsValueType).ToList();
-			var propTypeContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.PropertyTypeIsValueType).ToList();
+				branchingStrategy: TreeBranchingStrategy.PropertyTypeIsTvalue).ToList();
+			var propTypeContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				branchingStrategy: TreeBranchingStrategy.PropertyTypeIsTvalue).ToList();
 
 			var propValueResult = tree.AsTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.PropertyValueIsValueType).ToList();
-			var propValueContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.PropertyValueIsValueType).ToList();
+				branchingStrategy: TreeBranchingStrategy.PropertyValueIsTvalue).ToList();
+			var propValueContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				branchingStrategy: TreeBranchingStrategy.PropertyValueIsTvalue).ToList();
 
 			var allResult = tree.AsTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.AllProperties).ToList();
-			var allContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				branchStrategy: TreeBranchingStrategy.AllProperties).ToList();
+				branchingStrategy: TreeBranchingStrategy.AllProperties).ToList();
+			var allContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				branchingStrategy: TreeBranchingStrategy.AllProperties).ToList();
 
 
 			var propTypeBreadthResult = tree.AsTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst, 
-				branchStrategy: TreeBranchingStrategy.PropertyTypeIsValueType).ToList();
-			var propTypeBreadthContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst, 
-				branchStrategy: TreeBranchingStrategy.PropertyTypeIsValueType).ToList();
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst, 
+				branchingStrategy: TreeBranchingStrategy.PropertyTypeIsTvalue).ToList();
+			var propTypeBreadthContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst, 
+				branchingStrategy: TreeBranchingStrategy.PropertyTypeIsTvalue).ToList();
 
 			var propValueBreadthResult = tree.AsTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst, 
-				branchStrategy: TreeBranchingStrategy.PropertyValueIsValueType).ToList();
-			var propValueBreadthContextResult = tree.AsContextualTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst, 
-				branchStrategy: TreeBranchingStrategy.PropertyValueIsValueType).ToList();
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst, 
+				branchingStrategy: TreeBranchingStrategy.PropertyValueIsTvalue).ToList();
+			var propValueBreadthContextResult = tree.AsTreeEnumerableWithContext<ITreeNode>(
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst, 
+				branchingStrategy: TreeBranchingStrategy.PropertyValueIsTvalue).ToList();
 
 			var allBreadthResult = tree.AsTreeEnumerable<ITreeNode>(
-				enumStrategy: TreeEnumerationStrategy.BreadthFirst, 
-				branchStrategy: TreeBranchingStrategy.AllProperties).ToList();
+				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst, 
+				branchingStrategy: TreeBranchingStrategy.AllProperties).ToList();
 		}
 	}
 }

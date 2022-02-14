@@ -3,25 +3,26 @@ using System.Runtime.Serialization;
 
 namespace Marsman.Reflekt
 {
-    public abstract class DepthFirstTreeEnumeratorBase<Tvalue,Tcurrent> : TreeEnumeratorBase<Tvalue,Tcurrent>, IEnumerator<Tcurrent>
+    public abstract class DepthFirstTreeEnumeratorBase<Tvalue,Tcurrent> : TreeEnumeratorBase<Tvalue,Tcurrent, DepthFirstTreeEnumeratorBase<Tvalue, Tcurrent>>, IEnumerator<Tcurrent>
     {
-        protected TreeEnumeratorBase<Tvalue, Tcurrent> nextBranchEnumerator;
+        protected DepthFirstTreeEnumeratorBase<Tvalue, Tcurrent> nextBranchEnumerator;
 
         protected DepthFirstTreeEnumeratorBase(object rootObject,
                                int depth,
                                ObjectIDGenerator loopDetector,
-                               TreeBranchingStrategy branchingStrategy)
-            : base(rootObject, depth, loopDetector, branchingStrategy)
+                               TreeBranchingStrategy branchingStrategy,
+                               params Filter[] filters)
+            : base(rootObject, depth, loopDetector, branchingStrategy, filters)
         {
         }
 
-        public override void Reset()
+        public sealed override void Reset()
         {
             base.Reset();
             nextBranchEnumerator = null;
         }
 
-        public override bool MoveNext()
+        public sealed override bool MoveNext()
         {
             if (nextBranchEnumerator != null && currentBranchEnumerator == null)
             {
@@ -47,15 +48,13 @@ namespace Marsman.Reflekt
                     return MoveNext(); // try the next property
                 }
 
-                if (value is Tvalue t)
+                bool match = false;
+                if (value is Tvalue t && GetOrAddValueCheck(t.GetType()))
                 {
+                    match = true;
                     current = MapValue(t);
                 }
-
-                var branch = branchingStrategy == TreeBranchingStrategy.PropertyTypeIsValueType && propertyMap[CurrentIndex].PropertyTypeIsValueType;
-                branch |= branchingStrategy == TreeBranchingStrategy.PropertyValueIsValueType && value is Tvalue;
-                branch |= branchingStrategy == TreeBranchingStrategy.AllProperties;
-                branch &= value != null;
+                var branch = ShouldBranch(value, propertyMap[CurrentIndex]);
                 if (branch)
                 {
                     LoopDetector.GetId(value, out var isNew);
@@ -65,7 +64,7 @@ namespace Marsman.Reflekt
                     }
                 }
 
-                return value is Tvalue || MoveNext();
+                return match || MoveNext();
             }
             return false;
         }

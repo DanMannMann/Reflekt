@@ -7,6 +7,11 @@ namespace Marsman.Reflekt.Playground
 		private static readonly Type typeKnownAtRuntime = typeof(string);
 		static void Main(string[] args)
 		{
+			var factory = Reflekt<ExampleType>.Method<T1>().AsDelegateFactory().Parameters<T1>(x => x.GenericMethodEx);
+			var stringDelegate = factory.CreateWithTypeArguments(typeof(string));
+			var intDelegate = factory.CreateWithTypeArguments(typeof(int));
+			var uriDelegate = factory.CreateWithTypeArguments(typeof(Uri));
+
 			var method = Reflekt<ExampleType>.Method<string>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethod);
 			var methodWithGenericReturnType = Reflekt<ExampleType>.Method<T1>().WithTypeArguments(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethodEx);
 			var @delegate = Reflekt<ExampleType>.Method<string>().AsDelegate(typeKnownAtRuntime).Parameters<T1>(x => x.GenericMethod);

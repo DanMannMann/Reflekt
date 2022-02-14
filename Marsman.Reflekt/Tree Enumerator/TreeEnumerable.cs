@@ -6,14 +6,19 @@ namespace Marsman.Reflekt
     public class TreeEnumerable<Tvalue> : IEnumerable<Tvalue>
     {
         private readonly object rootObject;
-        private readonly TreeBranchingStrategy branchStrategy;
-        private readonly TreeEnumerationStrategy enumStrategy;
+        private readonly TreeBranchingStrategy branchingStrategy;
+        private readonly TreeEnumerationStrategy enumerationStrategy;
+        private readonly Filter[] filters;
 
-        public TreeEnumerable(object rootObject, TreeBranchingStrategy branchStrategy, TreeEnumerationStrategy enumStrategy)
+        public TreeEnumerable(object rootObject,
+                              TreeBranchingStrategy branchingStrategy,
+                              TreeEnumerationStrategy enumerationStrategy,
+                              params Filter[] filters)
         {
             this.rootObject = rootObject;
-            this.branchStrategy = branchStrategy;
-            this.enumStrategy = enumStrategy;
+            this.branchingStrategy = branchingStrategy;
+            this.enumerationStrategy = enumerationStrategy;
+            this.filters = filters;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -21,10 +26,10 @@ namespace Marsman.Reflekt
 
         public IEnumerator<Tvalue> GetEnumerator()
         {
-            return enumStrategy switch
+            return enumerationStrategy switch
             {
-                TreeEnumerationStrategy.BreadthFirst => new BreadthFirstTreeEnumerator<Tvalue>(rootObject, branchStrategy),
-                _ => new DepthFirstTreeEnumerator<Tvalue>(rootObject, branchStrategy),
+                TreeEnumerationStrategy.BreadthFirst => new BreadthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, filters),
+                _ => new DepthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, filters),
             };
         }
     }
