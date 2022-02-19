@@ -855,6 +855,8 @@ namespace Marsman.Reflekt.Test
 		{
 			var randomTreeFactory = new HugeRandomTreeFactory(5);
 			var tree = randomTreeFactory.Tree;
+			var thing = this.tree.AsTreeEnumerableWithContext<object>(0).ToList();
+
 			var allBreadthContextResult = tree.AsTreeEnumerableWithContext<object>(
 				enumerationStrategy: TreeEnumerationStrategy.BreadthFirst,
 				Filter.ExcludeBranchesAndValues<string>(),

@@ -4,12 +4,85 @@ namespace Marsman.Reflekt
 {
     public static class TreeEnumerableExtensions
     {
+        public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject,
+                                                                   TreeEnumerationStrategy enumerationStrategy,
+                                                                   TreeBranchingStrategy branchingStrategy,
+                                                                   int maxDepth = int.MaxValue,
+                                                                   params Filter[] filters)
+        {
+            return new TreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, maxDepth, filters);
+        }
+        public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerable<Tvalue>(rootObject,
+                                         TreeEnumerationStrategy.DepthFirst,
+                                         TreeBranchingStrategy.AllProperties,
+                                         maxDepth,
+                                         filters);
+        public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject,
+            TreeEnumerationStrategy enumerationStrategy,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerable<Tvalue>(rootObject,
+                                         enumerationStrategy,
+                                         TreeBranchingStrategy.AllProperties,
+                                         maxDepth,
+                                         filters);
+        public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject,
+            TreeBranchingStrategy branchingStrategy,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerable<Tvalue>(rootObject,
+                                         TreeEnumerationStrategy.DepthFirst,
+                                         branchingStrategy,
+                                         maxDepth,
+                                         filters);
+
+        public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
+                                                                   TreeEnumerationStrategy enumerationStrategy,
+                                                                   TreeBranchingStrategy branchingStrategy,
+                                                                   int maxDepth = int.MaxValue,
+                                                                   params Filter[] filters)
+        {
+            return new ContextualTreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, maxDepth, filters);
+        }
+        public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerableWithContext<Tvalue>(rootObject,
+                                                   TreeEnumerationStrategy.DepthFirst,
+                                                   TreeBranchingStrategy.AllProperties,
+                                                   maxDepth,
+                                                   filters);
+        public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
+            TreeEnumerationStrategy enumerationStrategy,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerableWithContext<Tvalue>(rootObject,
+                                                   enumerationStrategy,
+                                                   TreeBranchingStrategy.AllProperties,
+                                                   maxDepth,
+                                                   filters);
+        public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
+            TreeBranchingStrategy branchingStrategy,
+            int maxDepth = int.MaxValue,
+            params Filter[] filters) =>
+                AsTreeEnumerableWithContext<Tvalue>(rootObject,
+                                                   TreeEnumerationStrategy.DepthFirst,
+                                                   branchingStrategy,
+                                                   maxDepth,
+                                                   filters);
+
+
+
+
         public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject, 
                                                                    TreeEnumerationStrategy enumerationStrategy,
                                                                    TreeBranchingStrategy branchingStrategy,
                                                                    params Filter[] filters)
         {
-            return new TreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, filters);
+            return new TreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, int.MaxValue, filters);
         }
         public static IEnumerable<Tvalue> AsTreeEnumerable<Tvalue>(this object rootObject,
             params Filter[] filters) =>
@@ -37,13 +110,14 @@ namespace Marsman.Reflekt
                                                                    TreeBranchingStrategy branchingStrategy,
                                                                    params Filter[] filters)
         {
-            return new ContextualTreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, filters);
+            return new ContextualTreeEnumerable<Tvalue>(rootObject, branchingStrategy, enumerationStrategy, int.MaxValue, filters);
         }
         public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
             params Filter[] filters) =>
                 AsTreeEnumerableWithContext<Tvalue>(rootObject,
                                                    TreeEnumerationStrategy.DepthFirst,
                                                    TreeBranchingStrategy.AllProperties,
+                                                   int.MaxValue,
                                                    filters);
         public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
             TreeEnumerationStrategy enumerationStrategy,
@@ -51,6 +125,7 @@ namespace Marsman.Reflekt
                 AsTreeEnumerableWithContext<Tvalue>(rootObject,
                                                    enumerationStrategy,
                                                    TreeBranchingStrategy.AllProperties,
+                                                   int.MaxValue,
                                                    filters);
         public static IEnumerable<TreeEnumerationContext<Tvalue>> AsTreeEnumerableWithContext<Tvalue>(this object rootObject,
             TreeBranchingStrategy branchingStrategy,
@@ -58,6 +133,7 @@ namespace Marsman.Reflekt
                 AsTreeEnumerableWithContext<Tvalue>(rootObject,
                                                    TreeEnumerationStrategy.DepthFirst,
                                                    branchingStrategy,
+                                                   int.MaxValue,
                                                    filters);
     }
 }

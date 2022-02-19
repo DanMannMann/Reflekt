@@ -8,8 +8,9 @@ namespace Marsman.Reflekt
         private readonly TreeEnumerationContext<Tvalue> context = new TreeEnumerationContext<Tvalue>();
         public BreadthFirstContextualTreeEnumerator(object rootObject,
                                                   TreeBranchingStrategy branchingStrategy = TreeBranchingStrategy.AllProperties,
+                                                   int maxDepth = int.MaxValue,
                                                   Filter[] filters = null)
-            : this(rootObject, 0, new ObjectIDGenerator(), branchingStrategy, filters)
+            : this(rootObject, 0, new ObjectIDGenerator(), branchingStrategy, filters, maxDepth)
         {
         }
 
@@ -17,15 +18,16 @@ namespace Marsman.Reflekt
                                                    int depth,
                                                    ObjectIDGenerator loopDetector,
                                                    TreeBranchingStrategy branchingStrategy,
-                                                   Filter[] filters)
-            : base(rootObject, depth, loopDetector, branchingStrategy, filters)
+                                                   Filter[] filters,
+                                                   int maxDepth)
+            : base(rootObject, depth, loopDetector, branchingStrategy, maxDepth, filters)
         {
             context.Depth = depth;
         }
 
         protected sealed override BreadthFirstTreeEnumeratorBase<Tvalue, TreeEnumerationContext<Tvalue>> GetBranchEnumerator(object value)
         {
-            return new BreadthFirstContextualTreeEnumerator<Tvalue>(value, Depth + 1, LoopDetector, branchingStrategy, filters);
+            return new BreadthFirstContextualTreeEnumerator<Tvalue>(value, Depth + 1, LoopDetector, branchingStrategy, filters, MaxDepth);
         }
 
         protected sealed override TreeEnumerationContext<Tvalue> MapValue(Tvalue currentValue)

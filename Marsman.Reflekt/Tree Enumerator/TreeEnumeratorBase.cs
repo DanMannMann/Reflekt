@@ -23,6 +23,7 @@ namespace Marsman.Reflekt
 
         protected int Depth { get; private set; } = 0;
         protected ObjectIDGenerator LoopDetector { get; private set; }
+        public int MaxDepth { get; }
         protected int CurrentIndex { get; set; } = -1;
 
         private static ConcurrentDictionary<Type, List<(PropertyInfo, Func<object, object>, bool)>> factoryCache =
@@ -49,7 +50,8 @@ namespace Marsman.Reflekt
                                                int depth,
                                                ObjectIDGenerator loopDetector,
                                                TreeBranchingStrategy branchingStrategy,
-                                               Filter[] filters)
+                                               Filter[] filters,
+                                               int maxDepth)
         {
             propertyMap = MapType(rootObject.GetType());
             this.rootObject = rootObject;
@@ -57,6 +59,7 @@ namespace Marsman.Reflekt
             this.LoopDetector = loopDetector ?? new ObjectIDGenerator();
             this.branchingStrategy = branchingStrategy;
             this.filters = filters;
+            MaxDepth = maxDepth;
             this.explicitFilter = filters?.Any(x => x.Mode == FilterMode.IncludeBranch) ?? false;
         }
 

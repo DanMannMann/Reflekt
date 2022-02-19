@@ -11,8 +11,9 @@ namespace Marsman.Reflekt
                                int depth,
                                ObjectIDGenerator loopDetector,
                                TreeBranchingStrategy branchingStrategy,
+                               int maxDepth = int.MaxValue,
                                params Filter[] filters)
-            : base(rootObject, depth, loopDetector, branchingStrategy, filters)
+            : base(rootObject, depth, loopDetector, branchingStrategy, filters, maxDepth)
         {
         }
 
@@ -58,7 +59,7 @@ namespace Marsman.Reflekt
                 if (branch)
                 {
                     LoopDetector.GetId(value, out var isNew);
-                    if (isNew) // only branch into this object if it isn't already known
+                    if (isNew && MaxDepth > Depth) // only branch into this object if it isn't already known
                     {
                         nextBranchEnumerator = GetBranchEnumerator(value);
                     }

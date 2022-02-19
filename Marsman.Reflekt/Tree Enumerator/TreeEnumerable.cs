@@ -8,16 +8,19 @@ namespace Marsman.Reflekt
         private readonly object rootObject;
         private readonly TreeBranchingStrategy branchingStrategy;
         private readonly TreeEnumerationStrategy enumerationStrategy;
+        private readonly int maxDepth;
         private readonly Filter[] filters;
 
         public TreeEnumerable(object rootObject,
                               TreeBranchingStrategy branchingStrategy,
                               TreeEnumerationStrategy enumerationStrategy,
+                              int maxDepth = int.MaxValue,
                               params Filter[] filters)
         {
             this.rootObject = rootObject;
             this.branchingStrategy = branchingStrategy;
             this.enumerationStrategy = enumerationStrategy;
+            this.maxDepth = maxDepth;
             this.filters = filters;
         }
 
@@ -28,8 +31,8 @@ namespace Marsman.Reflekt
         {
             return enumerationStrategy switch
             {
-                TreeEnumerationStrategy.BreadthFirst => new BreadthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, filters),
-                _ => new DepthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, filters),
+                TreeEnumerationStrategy.BreadthFirst => new BreadthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, maxDepth, filters),
+                _ => new DepthFirstTreeEnumerator<Tvalue>(rootObject, branchingStrategy, maxDepth, filters),
             };
         }
     }
