@@ -9,6 +9,8 @@
 	<Authors>Marsman</Authors>
 	<Company>Marsman</Company>
 	<Copyright>Marsman</Copyright>
+	<PackageProjectUrl>https://github.com/DanMannMann/Reflekt</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/DanMannMann/Reflekt</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
