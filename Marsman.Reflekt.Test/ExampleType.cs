@@ -7,6 +7,7 @@ namespace Marsman.Reflekt.Test
 		public string Property1 { get; set; }
 
 		public string Property2 { get; set; }
+		public double PropertyNew { get; set; }
 
 		public double Method1() { return 12d; }
 

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Marsman.Reflekt.Test
@@ -37,7 +39,30 @@ namespace Marsman.Reflekt.Test
 		[TestMethod]
 		public void GetPropertyInfo()
 		{
+			Expression<Func<ExampleType, string>> expression = x => x.Property1;
 			var property = Reflekt<ExampleType>.Property(x => x.Property1);
+			var instance = new ExampleType();
+			instance.Property1 = "test value";
+			Assert.AreEqual("Property1", property.Name);
+			Assert.AreEqual("test value", property.GetValue(instance));
+		}
+
+		[TestMethod]
+		public void GetPropertyInfoTyped()
+		{
+			Expression<Func<ExampleType, string>> expression = x => x.Property1;
+			var property = Reflekt<ExampleType>.Property(expression);
+			var instance = new ExampleType();
+			instance.Property1 = "test value";
+			Assert.AreEqual("Property1", property.Name);
+			Assert.AreEqual("test value", property.GetValue(instance));
+		}
+
+		[TestMethod]
+		public void GetPropertyInfoUntyped()
+		{
+			Expression<Func<ExampleType, object>> expression = x => x.Property1;
+			var property = Reflekt<ExampleType>.Property(expression);
 			var instance = new ExampleType();
 			instance.Property1 = "test value";
 			Assert.AreEqual("Property1", property.Name);

@@ -11,6 +11,10 @@ namespace Marsman.Reflekt
         {
             return PropertyVisitor.GetPropertyInfo(selector);
         }
+        public static PropertyInfo Property<Tprop>(Expression<Func<T, Tprop>> selector)
+        {
+            return PropertyVisitor.GetPropertyInfo(selector);
+        }
 
         public static Action<T, Tvalue> PropertySetterDelegate<Tvalue>(Expression<Func<T, Tvalue>> selector)
         {
