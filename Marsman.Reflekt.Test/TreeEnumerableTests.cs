@@ -11,9 +11,7 @@ namespace Marsman.Reflekt.Test
     [TestClass]
 	public class TreeEnumerableTests
 	{
-		// TODO need to put some actual tests in here
-
-		private NotNode simpleTree = new NotNode
+		private NotNode simpleTree = new ReadWriteOnlyTestingNotNode
 		{
 			InterfaceNode = new SpecialNode
 			{

@@ -37,6 +37,7 @@ namespace Marsman.Reflekt
                                                        var factory = new ReflektPropertyGetterDelegateFactory(t);
                                                        return t.GetProperties()
                                                          .Where(x => !x.GetIndexParameters().Any()) // ignore indexer properties - we don't explore into collections' items
+                                                         .Where(x => x.GetMethod != null) // ignore write-only properties
                                                          .Where(x => typeof(Tvalue).IsAssignableFrom(x.PropertyType) || // anything that might itself contain a Tvalue...
                                                                      x.PropertyType.IsAssignableFrom(typeof(Tvalue)) ||
                                                                      !x.PropertyType.IsValueType) // ...plus *all* non-value-types to continue navigating through

@@ -2,6 +2,12 @@
 
 namespace Marsman.Reflekt.Test
 {
+	public class ReadWriteOnlyTestingNotNode : NotNode
+    {
+		public object WriteOnlyProp { set { } }
+		public object ReadOnlyProp { get; }
+	}
+
     public class NotNode : ITestInterface
 	{
 		public ITreeNode InterfaceNode { get; set; }
